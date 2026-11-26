@@ -1,13 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FREELANCING TRAINING</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#071426;color:white;font-family:Arial,sans-serif;padding-bottom:85px}
@@ -72,11 +69,9 @@ label{display:block;margin-top:10px;color:#b9cde3}
 .hidden{display:none!important}
 </style>
 </head>
-
 <body>
 
 <header><h2>FREELANCING TRAINING</h2></header>
-
 <div class="ad"><b>ADVERTISEMENT</b>Advertisement Space</div>
 
 <!-- LOGIN -->
@@ -84,13 +79,10 @@ label{display:block;margin-top:10px;color:#b9cde3}
 <div class="auth-box">
 <h2>FREELANCING TRAINING</h2>
 <p class="note" style="text-align:center">আপনার অ্যাকাউন্টে Login করুন</p>
-
 <label>Gmail Address</label>
 <input id="loginEmail" type="email" placeholder="আপনার Gmail লিখুন">
-
 <label>Password</label>
 <input id="loginPassword" type="password" placeholder="আপনার Password লিখুন">
-
 <button class="auth-btn" onclick="loginUser()">LOGIN</button>
 <span class="auth-link" onclick="showPage('signup')">CREATE ACCOUNT</span>
 <p class="note" id="loginMessage"></p>
@@ -101,19 +93,14 @@ label{display:block;margin-top:10px;color:#b9cde3}
 <main class="page view" id="signup">
 <div class="auth-box">
 <h2>CREATE ACCOUNT</h2>
-
 <label>Full Name</label>
 <input id="signupName" placeholder="আপনার পুরো নাম">
-
 <label>Gmail Address</label>
 <input id="signupEmail" type="email" placeholder="আপনার Gmail">
-
 <label>Password</label>
 <input id="signupPassword" type="password" placeholder="Password">
-
 <label>Confirm Password</label>
 <input id="confirmPassword" type="password" placeholder="আবার Password লিখুন">
-
 <button class="auth-btn" onclick="createAccount()">CREATE ACCOUNT</button>
 <span class="auth-link" onclick="showPage('login')">Already have an account? LOGIN</span>
 <p class="note" id="signupMessage"></p>
@@ -146,28 +133,21 @@ label{display:block;margin-top:10px;color:#b9cde3}
 <h2 style="color:#40d9ff;margin:15px 0">Course Purchase</h2>
 <p class="note">কোর্স নির্বাচন করে পেমেন্টের তথ্য জমা দিন।</p>
 <div id="purchaseCourses"></div>
-
 <div class="card">
 <h3 style="margin-top:0">Payment Information</h3>
 <p class="note">পেমেন্টের পর Sender Number এবং Transaction ID লিখুন।</p>
-
 <div class="wallet"><b>Nagad</b><br>01793798125 <button onclick="copyNumber()">Copy</button></div>
 <div class="wallet"><b>Rocket</b><br>01793798125 <button onclick="copyNumber()">Copy</button></div>
 <div class="wallet"><b>bKash</b><br>01793798125 <button onclick="copyNumber()">Copy</button></div>
-
 <label>Selected Course</label>
 <select id="selectedCourse"></select>
-
 <label>Sender Number</label>
 <input id="senderNumber" type="tel" placeholder="আপনার পেমেন্ট নম্বর">
-
 <label>Transaction ID</label>
 <input id="transactionId" placeholder="Transaction ID">
-
 <button class="submit" onclick="submitPayment()">Submit Payment</button>
 <p class="note">এটি ডেমো ফর্ম। তথ্য Admin-এর কাছে পাঠানো বা পেমেন্ট যাচাই করা হয় না।</p>
 </div>
-
 <div class="card">
 <h3 style="margin-top:0">My Payment Status</h3>
 <div id="paymentStatus">এখনো কোনো পেমেন্ট জমা দেওয়া হয়নি।</div>
@@ -196,7 +176,6 @@ label{display:block;margin-top:10px;color:#b9cde3}
 <div class="logo" id="profileLogo">👤</div>
 <div class="profile-name" id="profileName">Your Name</div>
 </div>
-
 <button class="option" onclick="showPage('purchase')">🛍️ Course Purchase <span class="arrow">›</span></button>
 <button class="option" onclick="showPage('editProfile')">✏️ Edit Profile <span class="arrow">›</span></button>
 <button class="option" onclick="showPage('classTime')">🕒 Class Time <span class="arrow">›</span></button>
@@ -220,14 +199,12 @@ label{display:block;margin-top:10px;color:#b9cde3}
 <!-- CLASS TIME -->
 <main class="page view" id="classTime">
 <button class="back" onclick="showPage('profile')">← Back</button>
-
 <div class="clock">
 <span class="badge">● LIVE</span>
 <p style="color:#b9cde3;margin-top:8px">বাংলাদেশ সময়</p>
 <strong id="liveClock">--:--:--</strong>
 <p id="liveDate" class="note"></p>
 </div>
-
 <h2 style="color:#40d9ff;margin-bottom:15px">🕒 CLASS TIME</h2>
 <div id="classSchedules"></div>
 </main>
@@ -240,21 +217,15 @@ label{display:block;margin-top:10px;color:#b9cde3}
 
 <script>
 // ======================================
-// SUPABASE CONFIGURATION
+// SUPABASE CONFIGURATION - NEW
 // ======================================
-// Supabase Dashboard > Project Settings > API
-// এখানে নিজের Project URL ও anon/public key বসাতে হবে।
 
-const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_URL = "https://mdkdgoytlfqumjfnqrgb.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_UEkgKpDBAiDh6ojNFp_U2g_dMcVc-Wy";
 
 let supabaseClient = null;
 
-if(
-  window.supabase &&
-  SUPABASE_URL.startsWith("https://") &&
-  SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY"
-){
+if(window.supabase && SUPABASE_URL.startsWith("https://") && SUPABASE_ANON_KEY.startsWith("sb_publishable_")){
   supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY,
@@ -290,7 +261,6 @@ const VIDEO_URLS = {
 "Mobile Freelancing":""
 };
 
-// Admin schedule পরে Backend থেকে যুক্ত করতে হবে।
 const DEFAULT_SCHEDULES = {
 "Graphic Design":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"},
 "Digital Marketing":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"},
@@ -303,7 +273,6 @@ const DEFAULT_SCHEDULES = {
 let recorder = null;
 let audioChunks = [];
 let currentUser = null;
-
 let unlockedCourses = JSON.parse(localStorage.getItem("unlockedCourses") || "[]");
 
 // ======================================
@@ -311,21 +280,13 @@ let unlockedCourses = JSON.parse(localStorage.getItem("unlockedCourses") || "[]"
 // ======================================
 
 function showPage(id){
-  if(!currentUser && !["login","signup"].includes(id)){
-    id = "login";
-  }
-
+  if(!currentUser && !["login","signup"].includes(id)) id = "login";
   document.querySelectorAll(".view").forEach(p=>p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 
   const navMap = {home:"navHome",chat:"navChat",profile:"navProfile"};
-
   document.querySelectorAll(".bottom button").forEach(b=>b.classList.remove("active"));
-
-  if(navMap[id]){
-    document.getElementById(navMap[id]).classList.add("active");
-  }
-
+  if(navMap[id]) document.getElementById(navMap[id]).classList.add("active");
   window.scrollTo(0,0);
 }
 
@@ -345,20 +306,17 @@ async function createAccount(){
   const message = document.getElementById("signupMessage");
 
   if(authNotReady()){
-    message.textContent = "Supabase URL ও Anon Key আগে কোডে বসাতে হবে।";
+    message.textContent = "Supabase সংযোগ পাওয়া যায়নি।";
     return;
   }
-
   if(!name || !email || !password || !confirm){
     message.textContent = "সব তথ্য পূরণ করুন।";
     return;
   }
-
   if(password.length < 6){
     message.textContent = "Password কমপক্ষে ৬ অক্ষরের হতে হবে।";
     return;
   }
-
   if(password !== confirm){
     message.textContent = "দুটি Password মিলছে না।";
     return;
@@ -369,9 +327,7 @@ async function createAccount(){
   const {data,error} = await supabaseClient.auth.signUp({
     email,
     password,
-    options:{
-      data:{full_name:name}
-    }
+    options:{data:{full_name:name}}
   });
 
   if(error){
@@ -384,7 +340,8 @@ async function createAccount(){
     setProfileName(name);
     enterWebsite();
   }else{
-    message.textContent = "অ্যাকাউন্ট তৈরি হয়েছে। Gmail-এ confirmation link এলে সেটি নিশ্চিত করে Login করুন।";
+    document.getElementById("loginMessage").textContent =
+      "অ্যাকাউন্ট তৈরি হয়েছে। Gmail-এ confirmation link এলে নিশ্চিত করে Login করুন।";
     showPage("login");
   }
 }
@@ -395,10 +352,9 @@ async function loginUser(){
   const message = document.getElementById("loginMessage");
 
   if(authNotReady()){
-    message.textContent = "Supabase URL ও Anon Key আগে কোডে বসাতে হবে।";
+    message.textContent = "Supabase সংযোগ পাওয়া যায়নি।";
     return;
   }
-
   if(!email || !password){
     message.textContent = "Gmail এবং Password লিখুন।";
     return;
@@ -406,9 +362,7 @@ async function loginUser(){
 
   message.textContent = "Login হচ্ছে...";
 
-  const {data,error} = await supabaseClient.auth.signInWithPassword({
-    email,password
-  });
+  const {data,error} = await supabaseClient.auth.signInWithPassword({email,password});
 
   if(error){
     message.textContent = error.message;
@@ -509,7 +463,6 @@ function renderFolders(){
         document.getElementById("selectedCourse").value = name;
       }
     };
-
     area.append(folder);
   });
 }
@@ -555,7 +508,6 @@ function renderPurchase(){
 
 function copyNumber(){
   const number = "01793798125";
-
   if(navigator.clipboard){
     navigator.clipboard.writeText(number)
       .then(()=>alert("Number copied: " + number))
@@ -566,6 +518,11 @@ function copyNumber(){
 }
 
 function submitPayment(){
+  if(!currentUser){
+    alert("আগে Login করুন।");
+    return;
+  }
+
   const course = document.getElementById("selectedCourse").value;
   const sender = document.getElementById("senderNumber").value.trim();
   const trx = document.getElementById("transactionId").value.trim();
@@ -574,7 +531,6 @@ function submitPayment(){
     alert("Sender Number এবং Transaction ID পূরণ করুন।");
     return;
   }
-
   if(!/^[0-9+ -]{8,20}$/.test(sender)){
     alert("সঠিক Sender Number লিখুন।");
     return;
@@ -592,10 +548,8 @@ function submitPayment(){
   });
 
   localStorage.setItem(key,JSON.stringify(payments));
-
   document.getElementById("senderNumber").value = "";
   document.getElementById("transactionId").value = "";
-
   showPaymentStatus();
 
   alert("ডেমো হিসেবে Payment Pending দেখানো হয়েছে। এটি Admin-এর কাছে পাঠানো হয়নি এবং কোর্স আনলক করেনি।");
@@ -644,7 +598,6 @@ function showPaymentStatus(){
 
 function openCourse(name){
   document.getElementById("courseTitle").textContent = name;
-
   const url = VIDEO_URLS[name];
   const box = document.getElementById("videoBox");
 
@@ -712,7 +665,6 @@ function share(){
 function sendMessage(){
   const input = document.getElementById("messageInput");
   const value = input.value.trim();
-
   if(!value) return;
 
   const msg = document.createElement("div");
@@ -828,13 +780,11 @@ function saveProfile(){
     }
 
     const reader = new FileReader();
-
     reader.onload = ()=>{
       localStorage.setItem("profileImage_" + currentUser.id,reader.result);
       showProfileImage(reader.result);
       saveName();
     };
-
     reader.readAsDataURL(file);
   }else{
     saveName();
@@ -851,7 +801,6 @@ function renderSchedules(){
 
   COURSES.forEach(name=>{
     const schedule = DEFAULT_SCHEDULES[name];
-
     const card = document.createElement("div");
     card.className = "schedule-row";
 
@@ -902,10 +851,9 @@ renderFolders();
 renderPurchase();
 renderSchedules();
 updateClock();
-
 setInterval(updateClock,1000);
 checkLogin();
 
 </script>
 </body>
-</html>
+  </html>
