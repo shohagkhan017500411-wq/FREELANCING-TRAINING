@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,8 +14,10 @@ header h2{color:#40d9ff;font-size:20px}
 .ad{margin:12px 16px;padding:17px;text-align:center;background:#102641;border:1px dashed #40d9ff;border-radius:12px}
 .ad b{display:block;color:#40d9ff;margin-bottom:5px}
 .view{display:none}.view.active{display:block}
-.folder{background:#102641;border:1px solid #24516e;padding:18px;margin-bottom:12px;border-radius:12px;display:flex;align-items:center;gap:14px;font-weight:bold;cursor:pointer}
+.folder,.option,.card{background:#102641;border:1px solid #24516e;border-radius:12px}
+.folder{padding:18px;margin-bottom:12px;display:flex;align-items:center;gap:14px;font-weight:bold;cursor:pointer}
 .folder span{font-size:27px}
+.folder.locked{opacity:.8}
 .back,.primary{background:#087da5;color:white;border:0;padding:11px 16px;border-radius:9px;cursor:pointer}
 .video{background:#000;aspect-ratio:16/9;border-radius:12px;margin:15px 0;display:grid;place-items:center;color:#aaa;overflow:hidden}
 .video iframe{width:100%;height:100%;border:0}
@@ -32,23 +34,30 @@ h3{color:#40d9ff;margin:20px 0 12px}
 .bottom button{background:#123b70;color:white;border:0;border-radius:10px;padding:10px 5px;font-weight:bold}
 .bottom button.active{background:#087da5}
 .navicon{display:block;font-size:20px;margin-bottom:4px}
-.card{background:#102641;border:1px solid #24516e;border-radius:16px;padding:17px;margin-bottom:12px}
+.card{padding:17px;margin-bottom:12px}
 .profile-top{text-align:center;background:linear-gradient(145deg,#123b70,#0d294c);padding:25px}
 .logo{width:90px;height:90px;border-radius:50%;background:#dcecff;color:#164477;display:grid;place-items:center;font-size:40px;margin:0 auto 12px;border:3px solid #60a5fa}
 .profile-name{font-size:21px;font-weight:bold}
-.option{width:100%;display:flex;align-items:center;gap:12px;background:#123b70;color:white;border:1px solid #315b83;border-radius:12px;padding:16px;margin:10px 0;text-align:left;font-size:16px;font-weight:bold}
+.option{width:100%;display:flex;align-items:center;gap:12px;background:#123b70;color:white;border:1px solid #315b83;padding:16px;margin:10px 0;text-align:left;font-size:16px;font-weight:bold;cursor:pointer}
 .arrow{margin-left:auto}
 .red{color:#ffb5b5}
 .schedule{display:none;background:#0b203b;border:1px solid #315b83;padding:14px;border-radius:12px;margin-top:8px}
 .schedule.show{display:block}
-.chatbox{height:48vh;min-height:250px;overflow:auto;background:#0b203b;border:1px solid #24516e;border-radius:12px;padding:12px;margin:14px 0}
+.chatbox{height:42vh;min-height:230px;overflow:auto;background:#0b203b;border:1px solid #24516e;border-radius:12px;padding:12px;margin:14px 0}
 .msg{background:#173b59;padding:10px;border-radius:12px;margin:8px 0;max-width:85%;overflow-wrap:anywhere}
 .mine{margin-left:auto;background:#075b83}
 .msg small{display:block;font-size:10px;color:#c5d9ee;margin-top:5px}
 .compose{display:flex;gap:7px}
-input{min-width:0;flex:1;background:#102641;color:white;border:1px solid #315b83;border-radius:9px;padding:12px}
+input,select{min-width:0;width:100%;background:#102641;color:white;border:1px solid #315b83;border-radius:9px;padding:12px;margin:7px 0}
 .voice{background:#1769aa;color:white;border:0;border-radius:9px;padding:12px}
 .note{font-size:12px;color:#b9cde3;line-height:1.5;margin-top:10px}
+.course-card{background:#102641;border:1px solid #24516e;padding:14px;border-radius:12px;margin:10px 0}
+.course-card h3{margin:0 0 8px}
+.wallet{background:#0b203b;padding:12px;border-radius:10px;margin:8px 0}
+.wallet button{background:#087da5;color:white;border:0;padding:8px 12px;border-radius:7px}
+.status{color:#ffd36b;font-weight:bold;margin-top:8px}
+.submit{width:100%;padding:13px;background:#08a477;color:white;border:0;border-radius:9px;font-weight:bold;margin-top:10px}
+.hidden{display:none}
 </style>
 </head>
 <body>
@@ -58,19 +67,14 @@ input{min-width:0;flex:1;background:#102641;color:white;border:1px solid #315b83
 
 <!-- HOME -->
 <main class="page view active" id="home">
-<div class="folder" onclick="openCourse('Graphic Design')"><span>📁</span>Graphic Design</div>
-<div class="folder" onclick="openCourse('Digital Marketing')"><span>📁</span>Digital Marketing</div>
-<div class="folder" onclick="openCourse('Web Design')"><span>📁</span>Web Design</div>
-<div class="folder" onclick="openCourse('Data Entry')"><span>📁</span>Data Entry</div>
-<div class="folder" onclick="openCourse('Website Development')"><span>📁</span>Website Development</div>
-<div class="folder" onclick="openCourse('Mobile Freelancing')"><span>📁</span>Mobile Freelancing</div>
+<div id="courseFolders"></div>
 </main>
 
 <!-- VIDEO -->
 <main class="page view" id="videoPage">
 <button class="back" onclick="showPage('home')">← Back</button>
 <h2 id="courseTitle"></h2>
-<div class="video" id="videoBox">LIVE VIDEO LINK NOT ADDED</div>
+<div class="video" id="videoBox">VIDEO LINK NOT ADDED</div>
 <div class="actions">
 <button onclick="like(this)">👍 Like</button>
 <button onclick="like(this)">👎 Dislike</button>
@@ -78,6 +82,52 @@ input{min-width:0;flex:1;background:#102641;color:white;border:1px solid #315b83
 </div>
 <h3>Members</h3>
 <div id="members"></div>
+</main>
+
+<!-- COURSE PURCHASE -->
+<main class="page view" id="purchase">
+<button class="back" onclick="showPage('profile')">← Back</button>
+<h2 style="color:#40d9ff;margin:15px 0">Course Purchase</h2>
+<p class="note">কোর্স কেনার জন্য কোর্স নির্বাচন করে পেমেন্টের তথ্য জমা দিন।</p>
+<div id="purchaseCourses"></div>
+
+<div class="card">
+<h3 style="margin-top:0">Payment Information</h3>
+<p class="note">নিচের নম্বরগুলোতে পেমেন্ট করার পর Sender Number এবং Transaction ID জমা দিন।</p>
+
+<div class="wallet">
+<b>Nagad</b><br>
+01793798125
+<button onclick="copyNumber()">Copy</button>
+</div>
+<div class="wallet">
+<b>Rocket</b><br>
+01793798125
+<button onclick="copyNumber()">Copy</button>
+</div>
+<div class="wallet">
+<b>bKash</b><br>
+01793798125
+<button onclick="copyNumber()">Copy</button>
+</div>
+
+<label>Selected Course</label>
+<select id="selectedCourse"></select>
+
+<label>Sender Number</label>
+<input id="senderNumber" type="tel" placeholder="আপনার পেমেন্ট নম্বর">
+
+<label>Transaction ID</label>
+<input id="transactionId" placeholder="Transaction ID লিখুন">
+
+<button class="submit" onclick="submitPayment()">Submit Payment</button>
+<p class="note">জমা দেওয়ার পর আপনার পেমেন্ট Pending থাকবে। Admin যাচাই না করা পর্যন্ত কোর্স আনলক হবে না।</p>
+</div>
+
+<div class="card">
+<h3 style="margin-top:0">My Payment Status</h3>
+<div id="paymentStatus">এখনো কোনো পেমেন্ট জমা দেওয়া হয়নি।</div>
+</div>
 </main>
 
 <!-- CHAT -->
@@ -99,11 +149,11 @@ input{min-width:0;flex:1;background:#102641;color:white;border:1px solid #315b83
 <main class="page view" id="profile">
 <h2 style="color:#40d9ff;margin-bottom:15px">MY PROFILE</h2>
 <div class="card profile-top">
-<div class="logo">👤</div>
+<div class="logo" id="profileLogo">👤</div>
 <div class="profile-name" id="profileName">Your Name</div>
 </div>
 
-<button class="option" onclick="alert('Course purchase information will be added here.')">
+<button class="option" onclick="showPage('purchase')">
 🛍️ Course Purchase <span class="arrow">›</span>
 </button>
 
@@ -116,7 +166,8 @@ input{min-width:0;flex:1;background:#102641;color:white;border:1px solid #315b83
 </button>
 
 <div class="schedule" id="schedule">
-Class start and end times will be announced by the Admin.
+<p>Class Start: Admin will set the time.</p>
+<p>Class End: Admin will set the time.</p>
 </div>
 
 <button class="option red" onclick="logout()">
@@ -124,7 +175,6 @@ Class start and end times will be announced by the Admin.
 </button>
 </main>
 
-<!-- BOTTOM NAVIGATION -->
 <nav class="bottom">
 <button class="active" id="navHome" onclick="showPage('home')">
 <span class="navicon">⌂</span>Home
@@ -138,7 +188,17 @@ Class start and end times will be announced by the Admin.
 </nav>
 
 <script>
-// Add video embed links here.
+// Course list
+const COURSES = [
+"Graphic Design",
+"Digital Marketing",
+"Web Design",
+"Data Entry",
+"Website Development",
+"Mobile Freelancing"
+];
+
+// Course video links: এখানে ভিডিও লিংক বসাবে
 const VIDEO_URLS = {
 "Graphic Design":"",
 "Digital Marketing":"",
@@ -148,70 +208,159 @@ const VIDEO_URLS = {
 "Mobile Freelancing":""
 };
 
-// Demo member list. Real members need a database.
+// Demo settings
+const CURRENT_USER_ROLE = "member";
+let recorder;
+let audioChunks = [];
+let selectedCourseName = "";
+
+// Demo unlocked course list.
+// Real approval অবশ্যই secure database থেকে নিতে হবে।
+let unlockedCourses = JSON.parse(localStorage.getItem("unlockedCourses") || "[]");
+
+// Render home folders
+function renderFolders(){
+const area = document.getElementById("courseFolders");
+area.innerHTML = "";
+
+COURSES.forEach(name => {
+const unlocked = unlockedCourses.includes(name);
+const folder = document.createElement("div");
+folder.className = "folder" + (unlocked ? "" : " locked");
+
+const icon = document.createElement("span");
+icon.textContent = unlocked ? "📂" : "🔒";
+
+const title = document.createElement("div");
+title.textContent = name;
+
+folder.append(icon,title);
+folder.onclick = () => {
+if(unlocked){
+openCourse(name);
+}else{
+alert("এই কোর্সটি এখনো লক করা আছে। Course Purchase থেকে পেমেন্ট জমা দিন।");
+showPage("purchase");
+document.getElementById("selectedCourse").value = name;
+}
+};
+
+area.append(folder);
+});
+}
+
+// Purchase course list
+function renderPurchase(){
+const area = document.getElementById("purchaseCourses");
+const select = document.getElementById("selectedCourse");
+area.innerHTML = "";
+select.innerHTML = "";
+
+COURSES.forEach(name => {
+const card = document.createElement("div");
+card.className = "course-card";
+
+const title = document.createElement("h3");
+title.textContent = name;
+
+const price = document.createElement("p");
+price.className = "note";
+price.textContent = "Course Price: Admin নির্ধারণ করবেন";
+
+const button = document.createElement("button");
+button.className = "primary";
+button.textContent = "Buy Course";
+button.onclick = () => {
+select.value = name;
+document.getElementById("senderNumber").focus();
+};
+
+card.append(title,price,button);
+area.append(card);
+
+const option = document.createElement("option");
+option.value = name;
+option.textContent = name;
+select.append(option);
+});
+}
+
+// Navigation
+function showPage(id){
+document.querySelectorAll(".view").forEach(p => p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+
+document.querySelectorAll(".bottom button").forEach(b => b.classList.remove("active"));
+const nav = {home:"navHome",chat:"navChat",profile:"navProfile"};
+
+if(nav[id]) document.getElementById(nav[id]).classList.add("active");
+window.scrollTo(0,0);
+}
+
+// Open unlocked course
+function openCourse(name){
+document.getElementById("courseTitle").textContent = name;
+
+const url = VIDEO_URLS[name];
+const box = document.getElementById("videoBox");
+
+if(url){
+const iframe = document.createElement("iframe");
+iframe.src = url;
+iframe.allowFullscreen = true;
+box.replaceChildren(iframe);
+}else{
+box.textContent = "VIDEO LINK NOT ADDED";
+}
+
+showMembers();
+showPage("videoPage");
+}
+
+// Demo member list
 const membersData = [
 {name:"Your Profile",avatar:"👤",mic:false},
 {name:"Member 1",avatar:"👤",mic:false},
 {name:"Member 2",avatar:"👤",mic:false}
 ];
 
-// Demo role. Real Admin access must be verified securely.
-const CURRENT_USER_ROLE = "member";
-
-let recorder;
-let audioChunks=[];
-
-function showPage(id){
-document.querySelectorAll(".view").forEach(p=>p.classList.remove("active"));
-document.getElementById(id).classList.add("active");
-
-document.querySelectorAll(".bottom button").forEach(b=>b.classList.remove("active"));
-const nav={home:"navHome",chat:"navChat",profile:"navProfile"};
-if(nav[id])document.getElementById(nav[id]).classList.add("active");
-window.scrollTo(0,0);
-}
-
-function openCourse(name){
-document.getElementById("courseTitle").textContent=name;
-const url=VIDEO_URLS[name];
-const box=document.getElementById("videoBox");
-if(url){
-box.innerHTML='<iframe src="'+url+'" allowfullscreen></iframe>';
-}else{
-box.textContent="LIVE VIDEO LINK NOT ADDED";
-}
-showMembers();
-showPage("videoPage");
-}
-
 function showMembers(){
-const list=document.getElementById("members");
-list.innerHTML="";
-membersData.forEach(member=>{
-const row=document.createElement("div");
-row.className="member";
-const avatar=document.createElement("div");
-avatar.className="avatar";
-avatar.textContent=member.avatar;
-const name=document.createElement("div");
-name.className="member-name";
-name.textContent=member.name;
-const mic=document.createElement("span");
-mic.className="mic "+(member.mic?"":"off");
-mic.textContent=member.mic?"🎙":"🔇";
+const list = document.getElementById("members");
+list.innerHTML = "";
+
+membersData.forEach(member => {
+const row = document.createElement("div");
+row.className = "member";
+
+const avatar = document.createElement("div");
+avatar.className = "avatar";
+avatar.textContent = member.avatar;
+
+const name = document.createElement("div");
+name.className = "member-name";
+name.textContent = member.name;
+
+const mic = document.createElement("span");
+mic.className = "mic " + (member.mic ? "" : "off");
+mic.textContent = member.mic ? "🎙" : "🔇";
+
 row.append(avatar,name,mic);
 
-if(CURRENT_USER_ROLE==="admin"){
-const btn=document.createElement("button");
-btn.className="admin-control";
-btn.textContent=member.mic?"Turn Off":"Turn On";
-btn.onclick=()=>{member.mic=!member.mic;showMembers()};
+if(CURRENT_USER_ROLE === "admin"){
+const btn = document.createElement("button");
+btn.className = "admin-control";
+btn.textContent = member.mic ? "Turn Off" : "Turn On";
+btn.onclick = () => {
+member.mic = !member.mic;
+showMembers();
+};
 row.append(btn);
 }
 list.append(row);
 });
 }
 
+// Like / Dislike / Share
 function like(button){
 button.classList.toggle("selected");
 }
@@ -225,75 +374,165 @@ alert("Link copied");
 }
 }
 
-function sendMessage(){
-const input=document.getElementById("messageInput");
-const value=input.value.trim();
-if(!value)return;
-const msg=document.createElement("div");
-msg.className="msg mine";
-msg.textContent=value;
-const time=document.createElement("small");
-time.textContent="You · "+new Date().toLocaleTimeString();
-msg.append(time);
-document.getElementById("messages").append(msg);
-input.value="";
-document.getElementById("messages").scrollTop=999999;
+// Copy payment number
+function copyNumber(){
+const number = "01793798125";
+if(navigator.clipboard){
+navigator.clipboard.writeText(number)
+.then(() => alert("Number copied: " + number))
+.catch(() => alert("Number: " + number));
+}else{
+alert("Number: " + number);
+}
 }
 
-async function recordVoice(){
-const button=document.getElementById("voiceButton");
-const status=document.getElementById("voiceStatus");
+// Submit demo payment
+function submitPayment(){
+const course = document.getElementById("selectedCourse").value;
+const sender = document.getElementById("senderNumber").value.trim();
+const trx = document.getElementById("transactionId").value.trim();
 
-if(recorder && recorder.state==="recording"){
+if(!sender || !trx){
+alert("Sender Number এবং Transaction ID পূরণ করুন।");
+return;
+}
+
+if(!/^[0-9+ -]{8,20}$/.test(sender)){
+alert("সঠিক Sender Number লিখুন।");
+return;
+}
+
+const payments = JSON.parse(localStorage.getItem("demoPayments") || "[]");
+
+payments.push({
+course:course,
+sender:sender,
+transactionId:trx,
+status:"Pending",
+date:new Date().toLocaleString()
+});
+
+localStorage.setItem("demoPayments",JSON.stringify(payments));
+
+document.getElementById("senderNumber").value = "";
+document.getElementById("transactionId").value = "";
+
+showPaymentStatus();
+alert("ডেমো হিসেবে Payment Pending দেখানো হয়েছে। এটি এখনো Admin-এর কাছে পাঠানো হয়নি।");
+}
+
+// Show payment status
+function showPaymentStatus(){
+const area = document.getElementById("paymentStatus");
+const payments = JSON.parse(localStorage.getItem("demoPayments") || "[]");
+
+if(!payments.length){
+area.textContent = "এখনো কোনো পেমেন্ট জমা দেওয়া হয়নি।";
+return;
+}
+
+area.innerHTML = "";
+
+payments.slice().reverse().forEach(payment => {
+const box = document.createElement("div");
+box.className = "wallet";
+
+const title = document.createElement("b");
+title.textContent = payment.course;
+
+const details = document.createElement("p");
+details.className = "note";
+details.textContent = "Transaction ID: " + payment.transactionId;
+
+const status = document.createElement("p");
+status.className = "status";
+status.textContent = "Status: " + payment.status;
+
+box.append(title,details,status);
+area.append(box);
+});
+}
+
+// Chat demo
+function sendMessage(){
+const input = document.getElementById("messageInput");
+const value = input.value.trim();
+if(!value) return;
+
+const msg = document.createElement("div");
+msg.className = "msg mine";
+msg.textContent = value;
+
+const time = document.createElement("small");
+time.textContent = "You · " + new Date().toLocaleTimeString();
+msg.append(time);
+
+document.getElementById("messages").append(msg);
+input.value = "";
+document.getElementById("messages").scrollTop = 999999;
+}
+
+// Voice message preview
+async function recordVoice(){
+const button = document.getElementById("voiceButton");
+const status = document.getElementById("voiceStatus");
+
+if(recorder && recorder.state === "recording"){
 recorder.stop();
-button.textContent="🎤";
-status.textContent="Processing recording...";
+button.textContent = "🎤";
+status.textContent = "Processing recording...";
 return;
 }
 
 if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-status.textContent="Voice recording needs a supported browser and HTTPS.";
+status.textContent = "Voice recording needs a supported browser and HTTPS.";
 return;
 }
 
 try{
-const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-audioChunks=[];
-recorder=new MediaRecorder(stream);
+const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+audioChunks = [];
+recorder = new MediaRecorder(stream);
 
-recorder.ondataavailable=e=>{
-if(e.data.size>0)audioChunks.push(e.data);
+recorder.ondataavailable = e => {
+if(e.data.size > 0) audioChunks.push(e.data);
 };
 
-recorder.onstop=()=>{
-const blob=new Blob(audioChunks,{type:recorder.mimeType||"audio/webm"});
-const url=URL.createObjectURL(blob);
-const msg=document.createElement("div");
-msg.className="msg mine";
-msg.textContent="Voice Message";
-const audio=document.createElement("audio");
-audio.controls=true;
-audio.src=url;
-audio.style.width="100%";
+recorder.onstop = () => {
+const blob = new Blob(audioChunks,{type:recorder.mimeType || "audio/webm"});
+const url = URL.createObjectURL(blob);
+
+const msg = document.createElement("div");
+msg.className = "msg mine";
+msg.textContent = "Voice Message";
+
+const audio = document.createElement("audio");
+audio.controls = true;
+audio.src = url;
+audio.style.width = "100%";
+
 msg.append(audio);
 document.getElementById("messages").append(msg);
-stream.getTracks().forEach(t=>t.stop());
-status.textContent="Voice message added to this preview.";
+stream.getTracks().forEach(t => t.stop());
+
+status.textContent = "Voice message added to this preview.";
 };
 
 recorder.start();
-button.textContent="■";
-status.textContent="Recording... Tap again to stop.";
+button.textContent = "■";
+status.textContent = "Recording... Tap again to stop.";
 }catch(error){
-status.textContent="Microphone permission was not granted.";
+status.textContent = "Microphone permission was not granted.";
 }
 }
 
+// Profile
 function editProfile(){
-const oldName=document.getElementById("profileName").textContent;
-const name=prompt("Enter your name:",oldName);
+const oldName = document.getElementById("profileName").textContent;
+const name = prompt("Enter your name:",oldName);
+
 if(name && name.trim()){
-document.getElementById("profileName").textContent=name.trim();
+document.getElementById("profileName").textContent = name.trim();
 }
 }
 
@@ -303,9 +542,14 @@ document.getElementById("schedule").classList.toggle("show");
 
 function logout(){
 if(confirm("Do you want to log out?")){
-alert("Secure login system needs to be connected for logout.");
+alert("লগইন ব্যবস্থা যুক্ত হলে এখানে নিরাপদভাবে Log Out হবে।");
 }
 }
+
+// Start
+renderFolders();
+renderPurchase();
+showPaymentStatus();
 </script>
 </body>
 </html>
