@@ -5,68 +5,124 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FREELANCING TRAINING</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#071426;color:white;font-family:Arial,sans-serif;padding-bottom:85px}
 header{background:#0b203b;padding:18px;text-align:center;border-bottom:1px solid #24516e}
 header h2{color:#40d9ff;font-size:20px}
 .page{max-width:650px;margin:auto;padding:16px}
+.view{display:none}.view.active{display:block}
 .ad{margin:12px 16px;padding:17px;text-align:center;background:#102641;border:1px dashed #40d9ff;border-radius:12px}
 .ad b{display:block;color:#40d9ff;margin-bottom:5px}
-.view{display:none}.view.active{display:block}
-.folder,.option,.card{background:#102641;border:1px solid #24516e;border-radius:12px}
+.card,.folder,.option{background:#102641;border:1px solid #24516e;border-radius:12px}
+.card{padding:17px;margin-bottom:12px}
 .folder{padding:18px;margin-bottom:12px;display:flex;align-items:center;gap:14px;font-weight:bold;cursor:pointer}
 .folder span{font-size:27px}
 .folder.locked{opacity:.8}
 .back,.primary{background:#087da5;color:white;border:0;padding:11px 16px;border-radius:9px;cursor:pointer}
+h3{color:#40d9ff;margin:20px 0 12px}
+input,select{min-width:0;width:100%;background:#102641;color:white;border:1px solid #315b83;border-radius:9px;padding:12px;margin:7px 0}
+label{display:block;margin-top:10px;color:#b9cde3}
+.note{font-size:12px;color:#b9cde3;line-height:1.6;margin-top:10px}
+.bottom{position:fixed;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#0b203b;border-top:1px solid #24516e;padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+.bottom button{background:#123b70;color:white;border:0;border-radius:10px;padding:10px 5px;font-weight:bold}
+.bottom button.active{background:#087da5}
+.navicon{display:block;font-size:20px;margin-bottom:4px}
+.option{width:100%;display:flex;align-items:center;gap:12px;background:#123b70;color:white;border:1px solid #315b83;padding:16px;margin:10px 0;text-align:left;font-size:16px;font-weight:bold;cursor:pointer}
+.arrow{margin-left:auto}
+.red{color:#ffb5b5}
+.profile-top{text-align:center;background:linear-gradient(145deg,#123b70,#0d294c);padding:25px}
+.logo{width:90px;height:90px;border-radius:50%;background:#dcecff;color:#164477;display:grid;place-items:center;font-size:40px;margin:0 auto 12px;border:3px solid #60a5fa;overflow:hidden}
+.logo img{width:100%;height:100%;object-fit:cover}
+.profile-name{font-size:21px;font-weight:bold}
+.course-card{background:#102641;border:1px solid #24516e;padding:14px;border-radius:12px;margin:10px 0}
+.course-card h3{margin:0 0 8px}
+.wallet{background:#0b203b;padding:12px;border-radius:10px;margin:8px 0}
+.wallet button{background:#087da5;color:white;border:0;padding:8px 12px;border-radius:7px}
+.submit{width:100%;padding:13px;background:#08a477;color:white;border:0;border-radius:9px;font-weight:bold;margin-top:10px}
+.status{color:#ffd36b;font-weight:bold;margin-top:8px}
+.chatbox{height:38vh;min-height:220px;overflow:auto;background:#0b203b;border:1px solid #24516e;border-radius:12px;padding:12px;margin:14px 0}
+.msg{background:#173b59;padding:10px;border-radius:12px;margin:8px 0;max-width:85%;overflow-wrap:anywhere}
+.mine{margin-left:auto;background:#075b83}
+.msg small{display:block;font-size:10px;color:#c5d9ee;margin-top:5px}
+.compose{display:flex;gap:7px}
+.voice{background:#1769aa;color:white;border:0;border-radius:9px;padding:12px}
 .video{background:#000;aspect-ratio:16/9;border-radius:12px;margin:15px 0;display:grid;place-items:center;color:#aaa;overflow:hidden}
 .video iframe{width:100%;height:100%;border:0}
 .actions{display:flex;justify-content:space-around;background:#102641;padding:14px;border-radius:12px}
 .actions button{background:none;border:0;color:white;font-size:15px}
 .actions button.selected{color:#40d9ff}
-h3{color:#40d9ff;margin:20px 0 12px}
 .member{display:flex;align-items:center;gap:12px;background:#102641;padding:12px;border-radius:12px;margin-bottom:10px}
 .avatar{width:43px;height:43px;border-radius:50%;background:#dcecff;color:#164477;display:grid;place-items:center;font-size:22px}
 .member-name{flex:1;font-weight:bold}
 .mic{font-size:20px}.off{color:#ff7777}
-.admin-control{background:#1769aa;color:white;border:0;padding:8px;border-radius:7px}
-.bottom{position:fixed;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#0b203b;border-top:1px solid #24516e;padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
-.bottom button{background:#123b70;color:white;border:0;border-radius:10px;padding:10px 5px;font-weight:bold}
-.bottom button.active{background:#087da5}
-.navicon{display:block;font-size:20px;margin-bottom:4px}
-.card{padding:17px;margin-bottom:12px}
-.profile-top{text-align:center;background:linear-gradient(145deg,#123b70,#0d294c);padding:25px}
-.logo{width:90px;height:90px;border-radius:50%;background:#dcecff;color:#164477;display:grid;place-items:center;font-size:40px;margin:0 auto 12px;border:3px solid #60a5fa}
-.profile-name{font-size:21px;font-weight:bold}
-.option{width:100%;display:flex;align-items:center;gap:12px;background:#123b70;color:white;border:1px solid #315b83;padding:16px;margin:10px 0;text-align:left;font-size:16px;font-weight:bold;cursor:pointer}
-.arrow{margin-left:auto}
-.red{color:#ffb5b5}
-.schedule{display:none;background:#0b203b;border:1px solid #315b83;padding:14px;border-radius:12px;margin-top:8px}
-.schedule.show{display:block}
-.chatbox{height:42vh;min-height:230px;overflow:auto;background:#0b203b;border:1px solid #24516e;border-radius:12px;padding:12px;margin:14px 0}
-.msg{background:#173b59;padding:10px;border-radius:12px;margin:8px 0;max-width:85%;overflow-wrap:anywhere}
-.mine{margin-left:auto;background:#075b83}
-.msg small{display:block;font-size:10px;color:#c5d9ee;margin-top:5px}
-.compose{display:flex;gap:7px}
-input,select{min-width:0;width:100%;background:#102641;color:white;border:1px solid #315b83;border-radius:9px;padding:12px;margin:7px 0}
-.voice{background:#1769aa;color:white;border:0;border-radius:9px;padding:12px}
-.note{font-size:12px;color:#b9cde3;line-height:1.5;margin-top:10px}
-.course-card{background:#102641;border:1px solid #24516e;padding:14px;border-radius:12px;margin:10px 0}
-.course-card h3{margin:0 0 8px}
-.wallet{background:#0b203b;padding:12px;border-radius:10px;margin:8px 0}
-.wallet button{background:#087da5;color:white;border:0;padding:8px 12px;border-radius:7px}
-.status{color:#ffd36b;font-weight:bold;margin-top:8px}
-.submit{width:100%;padding:13px;background:#08a477;color:white;border:0;border-radius:9px;font-weight:bold;margin-top:10px}
-.hidden{display:none}
+.schedule-row{background:#102641;border:1px solid #24516e;padding:14px;border-radius:12px;margin:10px 0}
+.schedule-row h3{margin:0 0 12px}
+.schedule-row p{font-size:13px;color:#c4d8eb;margin:7px 0}
+.clock{background:#102641;border:1px solid #24516e;border-radius:12px;padding:14px;display:inline-block;margin-bottom:18px}
+.clock strong{font-size:25px;color:#40d9ff;display:block;margin-top:7px}
+.badge{font-size:11px;background:#087c55;padding:4px 8px;border-radius:20px}
+.auth-box{max-width:430px;margin:30px auto;background:#102641;border:1px solid #24516e;border-radius:16px;padding:22px}
+.auth-box h2{color:#40d9ff;margin-bottom:15px;text-align:center}
+.auth-btn{width:100%;padding:13px;border:0;border-radius:9px;background:#087da5;color:white;font-weight:bold;margin-top:12px}
+.auth-link{display:block;text-align:center;color:#40d9ff;margin-top:18px;cursor:pointer}
+.hidden{display:none!important}
 </style>
 </head>
+
 <body>
 
 <header><h2>FREELANCING TRAINING</h2></header>
+
 <div class="ad"><b>ADVERTISEMENT</b>Advertisement Space</div>
 
+<!-- LOGIN -->
+<main class="page view active" id="login">
+<div class="auth-box">
+<h2>FREELANCING TRAINING</h2>
+<p class="note" style="text-align:center">আপনার অ্যাকাউন্টে Login করুন</p>
+
+<label>Gmail Address</label>
+<input id="loginEmail" type="email" placeholder="আপনার Gmail লিখুন">
+
+<label>Password</label>
+<input id="loginPassword" type="password" placeholder="আপনার Password লিখুন">
+
+<button class="auth-btn" onclick="loginUser()">LOGIN</button>
+<span class="auth-link" onclick="showPage('signup')">CREATE ACCOUNT</span>
+<p class="note" id="loginMessage"></p>
+</div>
+</main>
+
+<!-- CREATE ACCOUNT -->
+<main class="page view" id="signup">
+<div class="auth-box">
+<h2>CREATE ACCOUNT</h2>
+
+<label>Full Name</label>
+<input id="signupName" placeholder="আপনার পুরো নাম">
+
+<label>Gmail Address</label>
+<input id="signupEmail" type="email" placeholder="আপনার Gmail">
+
+<label>Password</label>
+<input id="signupPassword" type="password" placeholder="Password">
+
+<label>Confirm Password</label>
+<input id="confirmPassword" type="password" placeholder="আবার Password লিখুন">
+
+<button class="auth-btn" onclick="createAccount()">CREATE ACCOUNT</button>
+<span class="auth-link" onclick="showPage('login')">Already have an account? LOGIN</span>
+<p class="note" id="signupMessage"></p>
+</div>
+</main>
+
 <!-- HOME -->
-<main class="page view active" id="home">
+<main class="page view" id="home">
+<h2 style="color:#40d9ff;margin-bottom:15px">আমাদের কোর্সসমূহ</h2>
 <div id="courseFolders"></div>
 </main>
 
@@ -80,36 +136,24 @@ input,select{min-width:0;width:100%;background:#102641;color:white;border:1px so
 <button onclick="like(this)">👎 Dislike</button>
 <button onclick="share()">↗ Share</button>
 </div>
-<h3>Members</h3>
+<h3>Members (Demo)</h3>
 <div id="members"></div>
 </main>
 
-<!-- COURSE PURCHASE -->
+<!-- PURCHASE -->
 <main class="page view" id="purchase">
 <button class="back" onclick="showPage('profile')">← Back</button>
 <h2 style="color:#40d9ff;margin:15px 0">Course Purchase</h2>
-<p class="note">কোর্স কেনার জন্য কোর্স নির্বাচন করে পেমেন্টের তথ্য জমা দিন।</p>
+<p class="note">কোর্স নির্বাচন করে পেমেন্টের তথ্য জমা দিন।</p>
 <div id="purchaseCourses"></div>
 
 <div class="card">
 <h3 style="margin-top:0">Payment Information</h3>
-<p class="note">নিচের নম্বরগুলোতে পেমেন্ট করার পর Sender Number এবং Transaction ID জমা দিন।</p>
+<p class="note">পেমেন্টের পর Sender Number এবং Transaction ID লিখুন।</p>
 
-<div class="wallet">
-<b>Nagad</b><br>
-01793798125
-<button onclick="copyNumber()">Copy</button>
-</div>
-<div class="wallet">
-<b>Rocket</b><br>
-01793798125
-<button onclick="copyNumber()">Copy</button>
-</div>
-<div class="wallet">
-<b>bKash</b><br>
-01793798125
-<button onclick="copyNumber()">Copy</button>
-</div>
+<div class="wallet"><b>Nagad</b><br>01793798125 <button onclick="copyNumber()">Copy</button></div>
+<div class="wallet"><b>Rocket</b><br>01793798125 <button onclick="copyNumber()">Copy</button></div>
+<div class="wallet"><b>bKash</b><br>01793798125 <button onclick="copyNumber()">Copy</button></div>
 
 <label>Selected Course</label>
 <select id="selectedCourse"></select>
@@ -118,10 +162,10 @@ input,select{min-width:0;width:100%;background:#102641;color:white;border:1px so
 <input id="senderNumber" type="tel" placeholder="আপনার পেমেন্ট নম্বর">
 
 <label>Transaction ID</label>
-<input id="transactionId" placeholder="Transaction ID লিখুন">
+<input id="transactionId" placeholder="Transaction ID">
 
 <button class="submit" onclick="submitPayment()">Submit Payment</button>
-<p class="note">জমা দেওয়ার পর আপনার পেমেন্ট Pending থাকবে। Admin যাচাই না করা পর্যন্ত কোর্স আনলক হবে না।</p>
+<p class="note">এটি ডেমো ফর্ম। তথ্য Admin-এর কাছে পাঠানো বা পেমেন্ট যাচাই করা হয় না।</p>
 </div>
 
 <div class="card">
@@ -133,16 +177,16 @@ input,select{min-width:0;width:100%;background:#102641;color:white;border:1px so
 <!-- CHAT -->
 <main class="page view" id="chat">
 <h2 style="color:#40d9ff">Direct Chat</h2>
-<p class="note">Send a text or voice message to the Admin.</p>
+<p class="note">Text এবং voice message preview.</p>
 <div class="chatbox" id="messages">
-<div class="msg">Welcome! Send a message to the Admin.<small>System</small></div>
+<div class="msg">Welcome!<small>System</small></div>
 </div>
 <div class="compose">
 <input id="messageInput" placeholder="Type a message...">
 <button class="primary" onclick="sendMessage()">Send</button>
 <button class="voice" id="voiceButton" onclick="recordVoice()">🎤</button>
 </div>
-<p class="note" id="voiceStatus">Tap the microphone to record a voice message.</p>
+<p class="note" id="voiceStatus">মাইক্রোফোনে চাপ দিয়ে রেকর্ড করুন।</p>
 </main>
 
 <!-- PROFILE -->
@@ -153,42 +197,81 @@ input,select{min-width:0;width:100%;background:#102641;color:white;border:1px so
 <div class="profile-name" id="profileName">Your Name</div>
 </div>
 
-<button class="option" onclick="showPage('purchase')">
-🛍️ Course Purchase <span class="arrow">›</span>
-</button>
-
-<button class="option" onclick="editProfile()">
-✏️ Edit Profile <span class="arrow">›</span>
-</button>
-
-<button class="option" onclick="toggleSchedule()">
-🕒 Class Time <span class="arrow">›</span>
-</button>
-
-<div class="schedule" id="schedule">
-<p>Class Start: Admin will set the time.</p>
-<p>Class End: Admin will set the time.</p>
-</div>
-
-<button class="option red" onclick="logout()">
-↪ Log Out <span class="arrow">›</span>
-</button>
+<button class="option" onclick="showPage('purchase')">🛍️ Course Purchase <span class="arrow">›</span></button>
+<button class="option" onclick="showPage('editProfile')">✏️ Edit Profile <span class="arrow">›</span></button>
+<button class="option" onclick="showPage('classTime')">🕒 Class Time <span class="arrow">›</span></button>
+<button class="option red" onclick="logout()">↪ Log Out <span class="arrow">›</span></button>
 </main>
 
-<nav class="bottom">
-<button class="active" id="navHome" onclick="showPage('home')">
-<span class="navicon">⌂</span>Home
-</button>
-<button id="navChat" onclick="showPage('chat')">
-<span class="navicon">☏</span>Chat
-</button>
-<button id="navProfile" onclick="showPage('profile')">
-<span class="navicon">●</span>Profile
-</button>
+<!-- EDIT PROFILE -->
+<main class="page view" id="editProfile">
+<button class="back" onclick="showPage('profile')">← Back</button>
+<h2 style="color:#40d9ff;margin:18px 0">EDIT PROFILE</h2>
+<div class="card">
+<label>Profile Picture</label>
+<input type="file" id="profileImageInput" accept="image/*">
+<label>Your Name</label>
+<input id="editName" placeholder="আপনার নাম">
+<button class="submit" onclick="saveProfile()">Save Changes</button>
+<p class="note">এখানে শুধু Profile Picture এবং Name পরিবর্তন করা যাবে।</p>
+</div>
+</main>
+
+<!-- CLASS TIME -->
+<main class="page view" id="classTime">
+<button class="back" onclick="showPage('profile')">← Back</button>
+
+<div class="clock">
+<span class="badge">● LIVE</span>
+<p style="color:#b9cde3;margin-top:8px">বাংলাদেশ সময়</p>
+<strong id="liveClock">--:--:--</strong>
+<p id="liveDate" class="note"></p>
+</div>
+
+<h2 style="color:#40d9ff;margin-bottom:15px">🕒 CLASS TIME</h2>
+<div id="classSchedules"></div>
+</main>
+
+<nav class="bottom hidden" id="bottomNav">
+<button class="active" id="navHome" onclick="showPage('home')"><span class="navicon">⌂</span>Home</button>
+<button id="navChat" onclick="showPage('chat')"><span class="navicon">☏</span>Chat</button>
+<button id="navProfile" onclick="showPage('profile')"><span class="navicon">●</span>Profile</button>
 </nav>
 
 <script>
-// Course list
+// ======================================
+// SUPABASE CONFIGURATION
+// ======================================
+// Supabase Dashboard > Project Settings > API
+// এখানে নিজের Project URL ও anon/public key বসাতে হবে।
+
+const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+
+let supabaseClient = null;
+
+if(
+  window.supabase &&
+  SUPABASE_URL.startsWith("https://") &&
+  SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY"
+){
+  supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
+    {
+      auth:{
+        persistSession:true,
+        autoRefreshToken:true,
+        detectSessionInUrl:true
+      }
+    }
+  );
+}
+
+// ======================================
+// COURSES
+// ======================================
+
 const COURSES = [
 "Graphic Design",
 "Digital Marketing",
@@ -198,7 +281,6 @@ const COURSES = [
 "Mobile Freelancing"
 ];
 
-// Course video links: এখানে ভিডিও লিংক বসাবে
 const VIDEO_URLS = {
 "Graphic Design":"",
 "Digital Marketing":"",
@@ -208,348 +290,622 @@ const VIDEO_URLS = {
 "Mobile Freelancing":""
 };
 
-// Demo settings
-const CURRENT_USER_ROLE = "member";
-let recorder;
-let audioChunks = [];
-let selectedCourseName = "";
+// Admin schedule পরে Backend থেকে যুক্ত করতে হবে।
+const DEFAULT_SCHEDULES = {
+"Graphic Design":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"},
+"Digital Marketing":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"},
+"Web Design":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"},
+"Data Entry":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"},
+"Website Development":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"},
+"Mobile Freelancing":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"}
+};
 
-// Demo unlocked course list.
-// Real approval অবশ্যই secure database থেকে নিতে হবে।
+let recorder = null;
+let audioChunks = [];
+let currentUser = null;
+
 let unlockedCourses = JSON.parse(localStorage.getItem("unlockedCourses") || "[]");
 
-// Render home folders
-function renderFolders(){
-const area = document.getElementById("courseFolders");
-area.innerHTML = "";
+// ======================================
+// NAVIGATION
+// ======================================
 
-COURSES.forEach(name => {
-const unlocked = unlockedCourses.includes(name);
-const folder = document.createElement("div");
-folder.className = "folder" + (unlocked ? "" : " locked");
-
-const icon = document.createElement("span");
-icon.textContent = unlocked ? "📂" : "🔒";
-
-const title = document.createElement("div");
-title.textContent = name;
-
-folder.append(icon,title);
-folder.onclick = () => {
-if(unlocked){
-openCourse(name);
-}else{
-alert("এই কোর্সটি এখনো লক করা আছে। Course Purchase থেকে পেমেন্ট জমা দিন।");
-showPage("purchase");
-document.getElementById("selectedCourse").value = name;
-}
-};
-
-area.append(folder);
-});
-}
-
-// Purchase course list
-function renderPurchase(){
-const area = document.getElementById("purchaseCourses");
-const select = document.getElementById("selectedCourse");
-area.innerHTML = "";
-select.innerHTML = "";
-
-COURSES.forEach(name => {
-const card = document.createElement("div");
-card.className = "course-card";
-
-const title = document.createElement("h3");
-title.textContent = name;
-
-const price = document.createElement("p");
-price.className = "note";
-price.textContent = "Course Price: Admin নির্ধারণ করবেন";
-
-const button = document.createElement("button");
-button.className = "primary";
-button.textContent = "Buy Course";
-button.onclick = () => {
-select.value = name;
-document.getElementById("senderNumber").focus();
-};
-
-card.append(title,price,button);
-area.append(card);
-
-const option = document.createElement("option");
-option.value = name;
-option.textContent = name;
-select.append(option);
-});
-}
-
-// Navigation
 function showPage(id){
-document.querySelectorAll(".view").forEach(p => p.classList.remove("active"));
-document.getElementById(id).classList.add("active");
+  if(!currentUser && !["login","signup"].includes(id)){
+    id = "login";
+  }
 
-document.querySelectorAll(".bottom button").forEach(b => b.classList.remove("active"));
-const nav = {home:"navHome",chat:"navChat",profile:"navProfile"};
+  document.querySelectorAll(".view").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 
-if(nav[id]) document.getElementById(nav[id]).classList.add("active");
-window.scrollTo(0,0);
+  const navMap = {home:"navHome",chat:"navChat",profile:"navProfile"};
+
+  document.querySelectorAll(".bottom button").forEach(b=>b.classList.remove("active"));
+
+  if(navMap[id]){
+    document.getElementById(navMap[id]).classList.add("active");
+  }
+
+  window.scrollTo(0,0);
 }
 
-// Open unlocked course
+// ======================================
+// AUTHENTICATION
+// ======================================
+
+function authNotReady(){
+  return !supabaseClient;
+}
+
+async function createAccount(){
+  const name = document.getElementById("signupName").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
+  const confirm = document.getElementById("confirmPassword").value;
+  const message = document.getElementById("signupMessage");
+
+  if(authNotReady()){
+    message.textContent = "Supabase URL ও Anon Key আগে কোডে বসাতে হবে।";
+    return;
+  }
+
+  if(!name || !email || !password || !confirm){
+    message.textContent = "সব তথ্য পূরণ করুন।";
+    return;
+  }
+
+  if(password.length < 6){
+    message.textContent = "Password কমপক্ষে ৬ অক্ষরের হতে হবে।";
+    return;
+  }
+
+  if(password !== confirm){
+    message.textContent = "দুটি Password মিলছে না।";
+    return;
+  }
+
+  message.textContent = "Account তৈরি হচ্ছে...";
+
+  const {data,error} = await supabaseClient.auth.signUp({
+    email,
+    password,
+    options:{
+      data:{full_name:name}
+    }
+  });
+
+  if(error){
+    message.textContent = error.message;
+    return;
+  }
+
+  if(data.session){
+    currentUser = data.user;
+    setProfileName(name);
+    enterWebsite();
+  }else{
+    message.textContent = "অ্যাকাউন্ট তৈরি হয়েছে। Gmail-এ confirmation link এলে সেটি নিশ্চিত করে Login করুন।";
+    showPage("login");
+  }
+}
+
+async function loginUser(){
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  const message = document.getElementById("loginMessage");
+
+  if(authNotReady()){
+    message.textContent = "Supabase URL ও Anon Key আগে কোডে বসাতে হবে।";
+    return;
+  }
+
+  if(!email || !password){
+    message.textContent = "Gmail এবং Password লিখুন।";
+    return;
+  }
+
+  message.textContent = "Login হচ্ছে...";
+
+  const {data,error} = await supabaseClient.auth.signInWithPassword({
+    email,password
+  });
+
+  if(error){
+    message.textContent = error.message;
+    return;
+  }
+
+  currentUser = data.user;
+  enterWebsite();
+}
+
+function enterWebsite(){
+  if(!currentUser) return;
+
+  const meta = currentUser.user_metadata || {};
+  const savedName = localStorage.getItem("profileName_" + currentUser.id);
+  setProfileName(savedName || meta.full_name || currentUser.email);
+
+  const savedImage = localStorage.getItem("profileImage_" + currentUser.id);
+  showProfileImage(savedImage);
+
+  document.getElementById("bottomNav").classList.remove("hidden");
+  showPage("home");
+  renderFolders();
+  renderPurchase();
+  showPaymentStatus();
+}
+
+async function logout(){
+  if(!confirm("আপনি কি সত্যিই Log Out করতে চান?")) return;
+
+  if(supabaseClient){
+    const {error} = await supabaseClient.auth.signOut();
+    if(error){
+      alert("Logout করা যায়নি: " + error.message);
+      return;
+    }
+  }
+
+  currentUser = null;
+  document.getElementById("bottomNav").classList.add("hidden");
+  showPage("login");
+}
+
+async function checkLogin(){
+  if(!supabaseClient){
+    showPage("login");
+    return;
+  }
+
+  const {data,error} = await supabaseClient.auth.getSession();
+
+  if(error || !data.session){
+    showPage("login");
+    return;
+  }
+
+  currentUser = data.session.user;
+  enterWebsite();
+}
+
+if(supabaseClient){
+  supabaseClient.auth.onAuthStateChange((event,session)=>{
+    if(event === "SIGNED_OUT"){
+      currentUser = null;
+      document.getElementById("bottomNav").classList.add("hidden");
+      showPage("login");
+    }
+  });
+}
+
+// ======================================
+// HOME COURSE FOLDERS
+// ======================================
+
+function renderFolders(){
+  const area = document.getElementById("courseFolders");
+  area.innerHTML = "";
+
+  COURSES.forEach(name=>{
+    const unlocked = unlockedCourses.includes(name);
+    const folder = document.createElement("div");
+    folder.className = "folder" + (unlocked ? "" : " locked");
+
+    const icon = document.createElement("span");
+    icon.textContent = unlocked ? "📂" : "🔒";
+
+    const title = document.createElement("div");
+    title.textContent = name;
+
+    folder.append(icon,title);
+
+    folder.onclick = ()=>{
+      if(unlocked){
+        openCourse(name);
+      }else{
+        alert("এই কোর্সটি এখনো লক করা আছে। Course Purchase থেকে তথ্য দেখুন।");
+        showPage("purchase");
+        document.getElementById("selectedCourse").value = name;
+      }
+    };
+
+    area.append(folder);
+  });
+}
+
+// ======================================
+// COURSE PURCHASE
+// ======================================
+
+function renderPurchase(){
+  const area = document.getElementById("purchaseCourses");
+  const select = document.getElementById("selectedCourse");
+  area.innerHTML = "";
+  select.innerHTML = "";
+
+  COURSES.forEach(name=>{
+    const card = document.createElement("div");
+    card.className = "course-card";
+
+    const title = document.createElement("h3");
+    title.textContent = name;
+
+    const price = document.createElement("p");
+    price.className = "note";
+    price.textContent = "Course Price: Admin নির্ধারণ করবেন";
+
+    const button = document.createElement("button");
+    button.className = "primary";
+    button.textContent = "Buy Course";
+    button.onclick = ()=>{
+      select.value = name;
+      document.getElementById("senderNumber").focus();
+    };
+
+    card.append(title,price,button);
+    area.append(card);
+
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    select.append(option);
+  });
+}
+
+function copyNumber(){
+  const number = "01793798125";
+
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(number)
+      .then(()=>alert("Number copied: " + number))
+      .catch(()=>alert("Number: " + number));
+  }else{
+    alert("Number: " + number);
+  }
+}
+
+function submitPayment(){
+  const course = document.getElementById("selectedCourse").value;
+  const sender = document.getElementById("senderNumber").value.trim();
+  const trx = document.getElementById("transactionId").value.trim();
+
+  if(!sender || !trx){
+    alert("Sender Number এবং Transaction ID পূরণ করুন।");
+    return;
+  }
+
+  if(!/^[0-9+ -]{8,20}$/.test(sender)){
+    alert("সঠিক Sender Number লিখুন।");
+    return;
+  }
+
+  const key = "demoPayments_" + currentUser.id;
+  const payments = JSON.parse(localStorage.getItem(key) || "[]");
+
+  payments.push({
+    course,
+    sender,
+    transactionId:trx,
+    status:"Pending",
+    date:new Date().toLocaleString()
+  });
+
+  localStorage.setItem(key,JSON.stringify(payments));
+
+  document.getElementById("senderNumber").value = "";
+  document.getElementById("transactionId").value = "";
+
+  showPaymentStatus();
+
+  alert("ডেমো হিসেবে Payment Pending দেখানো হয়েছে। এটি Admin-এর কাছে পাঠানো হয়নি এবং কোর্স আনলক করেনি।");
+}
+
+function showPaymentStatus(){
+  const area = document.getElementById("paymentStatus");
+
+  if(!currentUser){
+    area.textContent = "Login প্রয়োজন।";
+    return;
+  }
+
+  const payments = JSON.parse(localStorage.getItem("demoPayments_" + currentUser.id) || "[]");
+
+  if(!payments.length){
+    area.textContent = "এখনো কোনো পেমেন্ট জমা দেওয়া হয়নি।";
+    return;
+  }
+
+  area.innerHTML = "";
+
+  payments.slice().reverse().forEach(payment=>{
+    const box = document.createElement("div");
+    box.className = "wallet";
+
+    const title = document.createElement("b");
+    title.textContent = payment.course;
+
+    const details = document.createElement("p");
+    details.className = "note";
+    details.textContent = "Transaction ID: " + payment.transactionId;
+
+    const status = document.createElement("p");
+    status.className = "status";
+    status.textContent = "Status: " + payment.status;
+
+    box.append(title,details,status);
+    area.append(box);
+  });
+}
+
+// ======================================
+// VIDEO AND MEMBERS DEMO
+// ======================================
+
 function openCourse(name){
-document.getElementById("courseTitle").textContent = name;
+  document.getElementById("courseTitle").textContent = name;
 
-const url = VIDEO_URLS[name];
-const box = document.getElementById("videoBox");
+  const url = VIDEO_URLS[name];
+  const box = document.getElementById("videoBox");
 
-if(url){
-const iframe = document.createElement("iframe");
-iframe.src = url;
-iframe.allowFullscreen = true;
-box.replaceChildren(iframe);
-}else{
-box.textContent = "VIDEO LINK NOT ADDED";
+  if(url){
+    const iframe = document.createElement("iframe");
+    iframe.src = url;
+    iframe.allowFullscreen = true;
+    box.replaceChildren(iframe);
+  }else{
+    box.textContent = "VIDEO LINK NOT ADDED";
+  }
+
+  showMembers();
+  showPage("videoPage");
 }
 
-showMembers();
-showPage("videoPage");
-}
-
-// Demo member list
 const membersData = [
-{name:"Your Profile",avatar:"👤",mic:false},
-{name:"Member 1",avatar:"👤",mic:false},
-{name:"Member 2",avatar:"👤",mic:false}
+  {name:"Your Profile",avatar:"👤",mic:false},
+  {name:"Member 1",avatar:"👤",mic:false},
+  {name:"Member 2",avatar:"👤",mic:false}
 ];
 
 function showMembers(){
-const list = document.getElementById("members");
-list.innerHTML = "";
+  const list = document.getElementById("members");
+  list.innerHTML = "";
 
-membersData.forEach(member => {
-const row = document.createElement("div");
-row.className = "member";
+  membersData.forEach(member=>{
+    const row = document.createElement("div");
+    row.className = "member";
 
-const avatar = document.createElement("div");
-avatar.className = "avatar";
-avatar.textContent = member.avatar;
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.textContent = member.avatar;
 
-const name = document.createElement("div");
-name.className = "member-name";
-name.textContent = member.name;
+    const name = document.createElement("div");
+    name.className = "member-name";
+    name.textContent = member.name;
 
-const mic = document.createElement("span");
-mic.className = "mic " + (member.mic ? "" : "off");
-mic.textContent = member.mic ? "🎙" : "🔇";
+    const mic = document.createElement("span");
+    mic.className = "mic " + (member.mic ? "" : "off");
+    mic.textContent = member.mic ? "🎙" : "🔇";
 
-row.append(avatar,name,mic);
-
-if(CURRENT_USER_ROLE === "admin"){
-const btn = document.createElement("button");
-btn.className = "admin-control";
-btn.textContent = member.mic ? "Turn Off" : "Turn On";
-btn.onclick = () => {
-member.mic = !member.mic;
-showMembers();
-};
-row.append(btn);
-}
-list.append(row);
-});
+    row.append(avatar,name,mic);
+    list.append(row);
+  });
 }
 
-// Like / Dislike / Share
 function like(button){
-button.classList.toggle("selected");
+  button.classList.toggle("selected");
 }
 
 function share(){
-if(navigator.share){
-navigator.share({title:"FREELANCING TRAINING",url:location.href});
-}else if(navigator.clipboard){
-navigator.clipboard.writeText(location.href);
-alert("Link copied");
-}
-}
-
-// Copy payment number
-function copyNumber(){
-const number = "01793798125";
-if(navigator.clipboard){
-navigator.clipboard.writeText(number)
-.then(() => alert("Number copied: " + number))
-.catch(() => alert("Number: " + number));
-}else{
-alert("Number: " + number);
-}
+  if(navigator.share){
+    navigator.share({title:"FREELANCING TRAINING",url:location.href});
+  }else if(navigator.clipboard){
+    navigator.clipboard.writeText(location.href);
+    alert("Link copied");
+  }
 }
 
-// Submit demo payment
-function submitPayment(){
-const course = document.getElementById("selectedCourse").value;
-const sender = document.getElementById("senderNumber").value.trim();
-const trx = document.getElementById("transactionId").value.trim();
+// ======================================
+// CHAT DEMO
+// ======================================
 
-if(!sender || !trx){
-alert("Sender Number এবং Transaction ID পূরণ করুন।");
-return;
-}
-
-if(!/^[0-9+ -]{8,20}$/.test(sender)){
-alert("সঠিক Sender Number লিখুন।");
-return;
-}
-
-const payments = JSON.parse(localStorage.getItem("demoPayments") || "[]");
-
-payments.push({
-course:course,
-sender:sender,
-transactionId:trx,
-status:"Pending",
-date:new Date().toLocaleString()
-});
-
-localStorage.setItem("demoPayments",JSON.stringify(payments));
-
-document.getElementById("senderNumber").value = "";
-document.getElementById("transactionId").value = "";
-
-showPaymentStatus();
-alert("ডেমো হিসেবে Payment Pending দেখানো হয়েছে। এটি এখনো Admin-এর কাছে পাঠানো হয়নি।");
-}
-
-// Show payment status
-function showPaymentStatus(){
-const area = document.getElementById("paymentStatus");
-const payments = JSON.parse(localStorage.getItem("demoPayments") || "[]");
-
-if(!payments.length){
-area.textContent = "এখনো কোনো পেমেন্ট জমা দেওয়া হয়নি।";
-return;
-}
-
-area.innerHTML = "";
-
-payments.slice().reverse().forEach(payment => {
-const box = document.createElement("div");
-box.className = "wallet";
-
-const title = document.createElement("b");
-title.textContent = payment.course;
-
-const details = document.createElement("p");
-details.className = "note";
-details.textContent = "Transaction ID: " + payment.transactionId;
-
-const status = document.createElement("p");
-status.className = "status";
-status.textContent = "Status: " + payment.status;
-
-box.append(title,details,status);
-area.append(box);
-});
-}
-
-// Chat demo
 function sendMessage(){
-const input = document.getElementById("messageInput");
-const value = input.value.trim();
-if(!value) return;
+  const input = document.getElementById("messageInput");
+  const value = input.value.trim();
 
-const msg = document.createElement("div");
-msg.className = "msg mine";
-msg.textContent = value;
+  if(!value) return;
 
-const time = document.createElement("small");
-time.textContent = "You · " + new Date().toLocaleTimeString();
-msg.append(time);
+  const msg = document.createElement("div");
+  msg.className = "msg mine";
+  msg.textContent = value;
 
-document.getElementById("messages").append(msg);
-input.value = "";
-document.getElementById("messages").scrollTop = 999999;
+  const time = document.createElement("small");
+  time.textContent = "You · " + new Date().toLocaleTimeString();
+  msg.append(time);
+
+  document.getElementById("messages").append(msg);
+  input.value = "";
+  document.getElementById("messages").scrollTop = 999999;
 }
 
-// Voice message preview
 async function recordVoice(){
-const button = document.getElementById("voiceButton");
-const status = document.getElementById("voiceStatus");
+  const button = document.getElementById("voiceButton");
+  const status = document.getElementById("voiceStatus");
 
-if(recorder && recorder.state === "recording"){
-recorder.stop();
-button.textContent = "🎤";
-status.textContent = "Processing recording...";
-return;
+  if(recorder && recorder.state === "recording"){
+    recorder.stop();
+    button.textContent = "🎤";
+    status.textContent = "Processing recording...";
+    return;
+  }
+
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    status.textContent = "Voice recording needs HTTPS and a supported browser.";
+    return;
+  }
+
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    audioChunks = [];
+    recorder = new MediaRecorder(stream);
+
+    recorder.ondataavailable = e=>{
+      if(e.data.size > 0) audioChunks.push(e.data);
+    };
+
+    recorder.onstop = ()=>{
+      const blob = new Blob(audioChunks,{type:recorder.mimeType || "audio/webm"});
+      const url = URL.createObjectURL(blob);
+
+      const msg = document.createElement("div");
+      msg.className = "msg mine";
+      msg.textContent = "Voice Message";
+
+      const audio = document.createElement("audio");
+      audio.controls = true;
+      audio.src = url;
+      audio.style.width = "100%";
+
+      msg.append(audio);
+      document.getElementById("messages").append(msg);
+
+      stream.getTracks().forEach(t=>t.stop());
+      status.textContent = "Voice message added to this preview.";
+    };
+
+    recorder.start();
+    button.textContent = "■";
+    status.textContent = "Recording... আবার চাপলে বন্ধ হবে।";
+  }catch(error){
+    status.textContent = "Microphone permission পাওয়া যায়নি।";
+  }
 }
 
-if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-status.textContent = "Voice recording needs a supported browser and HTTPS.";
-return;
+// ======================================
+// PROFILE EDIT
+// ======================================
+
+function setProfileName(name){
+  document.getElementById("profileName").textContent = name || "Your Name";
+  document.getElementById("editName").value = name || "";
 }
 
-try{
-const stream = await navigator.mediaDevices.getUserMedia({audio:true});
-audioChunks = [];
-recorder = new MediaRecorder(stream);
+function showProfileImage(src){
+  const logo = document.getElementById("profileLogo");
+  logo.innerHTML = "";
 
-recorder.ondataavailable = e => {
-if(e.data.size > 0) audioChunks.push(e.data);
-};
-
-recorder.onstop = () => {
-const blob = new Blob(audioChunks,{type:recorder.mimeType || "audio/webm"});
-const url = URL.createObjectURL(blob);
-
-const msg = document.createElement("div");
-msg.className = "msg mine";
-msg.textContent = "Voice Message";
-
-const audio = document.createElement("audio");
-audio.controls = true;
-audio.src = url;
-audio.style.width = "100%";
-
-msg.append(audio);
-document.getElementById("messages").append(msg);
-stream.getTracks().forEach(t => t.stop());
-
-status.textContent = "Voice message added to this preview.";
-};
-
-recorder.start();
-button.textContent = "■";
-status.textContent = "Recording... Tap again to stop.";
-}catch(error){
-status.textContent = "Microphone permission was not granted.";
-}
+  if(src){
+    const img = document.createElement("img");
+    img.src = src;
+    logo.append(img);
+  }else{
+    logo.textContent = "👤";
+  }
 }
 
-// Profile
-function editProfile(){
-const oldName = document.getElementById("profileName").textContent;
-const name = prompt("Enter your name:",oldName);
+function saveProfile(){
+  if(!currentUser) return;
 
-if(name && name.trim()){
-document.getElementById("profileName").textContent = name.trim();
-}
+  const name = document.getElementById("editName").value.trim();
+  const file = document.getElementById("profileImageInput").files[0];
+
+  if(!name){
+    alert("আপনার নাম লিখুন।");
+    return;
+  }
+
+  const saveName = ()=>{
+    localStorage.setItem("profileName_" + currentUser.id,name);
+    setProfileName(name);
+    showPage("profile");
+    alert("Profile Name সংরক্ষণ হয়েছে।");
+  };
+
+  if(file){
+    if(file.size > 1024 * 1024){
+      alert("ছবির সাইজ ১ MB-এর কম রাখুন।");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = ()=>{
+      localStorage.setItem("profileImage_" + currentUser.id,reader.result);
+      showProfileImage(reader.result);
+      saveName();
+    };
+
+    reader.readAsDataURL(file);
+  }else{
+    saveName();
+  }
 }
 
-function toggleSchedule(){
-document.getElementById("schedule").classList.toggle("show");
+// ======================================
+// CLASS TIME AND LIVE CLOCK
+// ======================================
+
+function renderSchedules(){
+  const area = document.getElementById("classSchedules");
+  area.innerHTML = "";
+
+  COURSES.forEach(name=>{
+    const schedule = DEFAULT_SCHEDULES[name];
+
+    const card = document.createElement("div");
+    card.className = "schedule-row";
+
+    const title = document.createElement("h3");
+    title.textContent = "📁 " + name;
+
+    const date = document.createElement("p");
+    date.textContent = "📅 Class Date: " + schedule.date;
+
+    const start = document.createElement("p");
+    start.textContent = "🟢 Start Time: " + schedule.start;
+
+    const end = document.createElement("p");
+    end.textContent = "🔴 End Time: " + schedule.end;
+
+    card.append(title,date,start,end);
+    area.append(card);
+  });
 }
 
-function logout(){
-if(confirm("Do you want to log out?")){
-alert("লগইন ব্যবস্থা যুক্ত হলে এখানে নিরাপদভাবে Log Out হবে।");
-}
+function updateClock(){
+  const now = new Date();
+
+  document.getElementById("liveClock").textContent =
+    new Intl.DateTimeFormat("en-BD",{
+      timeZone:"Asia/Dhaka",
+      hour:"2-digit",
+      minute:"2-digit",
+      second:"2-digit",
+      hour12:true
+    }).format(now);
+
+  document.getElementById("liveDate").textContent =
+    new Intl.DateTimeFormat("bn-BD",{
+      timeZone:"Asia/Dhaka",
+      weekday:"long",
+      year:"numeric",
+      month:"long",
+      day:"numeric"
+    }).format(now);
 }
 
-// Start
+// ======================================
+// START WEBSITE
+// ======================================
+
 renderFolders();
 renderPurchase();
-showPaymentStatus();
+renderSchedules();
+updateClock();
+
+setInterval(updateClock,1000);
+checkLogin();
+
 </script>
 </body>
 </html>
