@@ -3,264 +3,309 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FREELANCING TRAINING</title>
-
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:#071426;color:white;
-  font-family:Arial,sans-serif;
-  min-height:100vh;padding-bottom:25px
-}
-header{
-  background:#0b203b;padding:18px;
-  text-align:center;border-bottom:1px solid #236080
-}
+body{background:#071426;color:white;font-family:Arial,sans-serif;padding-bottom:85px}
+header{background:#0b203b;padding:18px;text-align:center;border-bottom:1px solid #24516e}
 header h2{color:#40d9ff;font-size:20px}
-.page{padding:16px;max-width:650px;margin:auto}
-.folder{
-  background:#102641;border:1px solid #24516e;
-  padding:18px;margin-bottom:12px;
-  border-radius:12px;display:flex;
-  align-items:center;gap:14px;
-  cursor:pointer;font-size:16px;font-weight:bold
-}
-.folder-icon{font-size:27px}
-.folder:active{background:#17466b}
-#videoPage{display:none}
-.back{
-  background:#173b59;color:white;border:0;
-  padding:11px 17px;border-radius:8px;
-  margin-bottom:18px;cursor:pointer
-}
-.video-box{
-  background:#000;border-radius:12px;
-  overflow:hidden;width:100%;
-  aspect-ratio:16/9;margin:14px 0
-}
-.video-box iframe{
-  width:100%;height:100%;border:0
-}
-.video-placeholder{
-  height:100%;display:flex;
-  align-items:center;justify-content:center;
-  color:#aaa
-}
-.actions{
-  display:flex;justify-content:space-around;
-  padding:15px 0;margin-bottom:15px;
-  background:#102641;border-radius:12px
-}
-.actions button{
-  border:0;background:none;color:white;
-  font-size:15px;cursor:pointer;padding:8px
-}
+.page{max-width:650px;margin:auto;padding:16px}
+.ad{margin:12px 16px;padding:17px;text-align:center;background:#102641;border:1px dashed #40d9ff;border-radius:12px}
+.ad b{display:block;color:#40d9ff;margin-bottom:5px}
+.view{display:none}.view.active{display:block}
+.folder{background:#102641;border:1px solid #24516e;padding:18px;margin-bottom:12px;border-radius:12px;display:flex;align-items:center;gap:14px;font-weight:bold;cursor:pointer}
+.folder span{font-size:27px}
+.back,.primary{background:#087da5;color:white;border:0;padding:11px 16px;border-radius:9px;cursor:pointer}
+.video{background:#000;aspect-ratio:16/9;border-radius:12px;margin:15px 0;display:grid;place-items:center;color:#aaa;overflow:hidden}
+.video iframe{width:100%;height:100%;border:0}
+.actions{display:flex;justify-content:space-around;background:#102641;padding:14px;border-radius:12px}
+.actions button{background:none;border:0;color:white;font-size:15px}
 .actions button.selected{color:#40d9ff}
-h3{margin:18px 0 12px;color:#40d9ff}
-.member{
-  background:#102641;border:1px solid #244966;
-  border-radius:11px;padding:12px;
-  display:flex;align-items:center;
-  gap:12px;margin-bottom:10px
-}
-.avatar{
-  width:42px;height:42px;border-radius:50%;
-  background:#1769aa;display:flex;
-  justify-content:center;align-items:center;
-  font-size:20px
-}
+h3{color:#40d9ff;margin:20px 0 12px}
+.member{display:flex;align-items:center;gap:12px;background:#102641;padding:12px;border-radius:12px;margin-bottom:10px}
+.avatar{width:43px;height:43px;border-radius:50%;background:#dcecff;color:#164477;display:grid;place-items:center;font-size:22px}
 .member-name{flex:1;font-weight:bold}
-.mic{font-size:21px;color:#40d9ff}
-.mic.off{color:#ff5555}
-.admin-control{
-  border:0;border-radius:7px;
-  padding:8px 10px;background:#1769aa;
-  color:white;cursor:pointer
-}
-.hidden{display:none!important}
+.mic{font-size:20px}.off{color:#ff7777}
+.admin-control{background:#1769aa;color:white;border:0;padding:8px;border-radius:7px}
+.bottom{position:fixed;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#0b203b;border-top:1px solid #24516e;padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+.bottom button{background:#123b70;color:white;border:0;border-radius:10px;padding:10px 5px;font-weight:bold}
+.bottom button.active{background:#087da5}
+.navicon{display:block;font-size:20px;margin-bottom:4px}
+.card{background:#102641;border:1px solid #24516e;border-radius:16px;padding:17px;margin-bottom:12px}
+.profile-top{text-align:center;background:linear-gradient(145deg,#123b70,#0d294c);padding:25px}
+.logo{width:90px;height:90px;border-radius:50%;background:#dcecff;color:#164477;display:grid;place-items:center;font-size:40px;margin:0 auto 12px;border:3px solid #60a5fa}
+.profile-name{font-size:21px;font-weight:bold}
+.option{width:100%;display:flex;align-items:center;gap:12px;background:#123b70;color:white;border:1px solid #315b83;border-radius:12px;padding:16px;margin:10px 0;text-align:left;font-size:16px;font-weight:bold}
+.arrow{margin-left:auto}
+.red{color:#ffb5b5}
+.schedule{display:none;background:#0b203b;border:1px solid #315b83;padding:14px;border-radius:12px;margin-top:8px}
+.schedule.show{display:block}
+.chatbox{height:48vh;min-height:250px;overflow:auto;background:#0b203b;border:1px solid #24516e;border-radius:12px;padding:12px;margin:14px 0}
+.msg{background:#173b59;padding:10px;border-radius:12px;margin:8px 0;max-width:85%;overflow-wrap:anywhere}
+.mine{margin-left:auto;background:#075b83}
+.msg small{display:block;font-size:10px;color:#c5d9ee;margin-top:5px}
+.compose{display:flex;gap:7px}
+input{min-width:0;flex:1;background:#102641;color:white;border:1px solid #315b83;border-radius:9px;padding:12px}
+.voice{background:#1769aa;color:white;border:0;border-radius:9px;padding:12px}
+.note{font-size:12px;color:#b9cde3;line-height:1.5;margin-top:10px}
 </style>
 </head>
-
 <body>
 
-<header>
-  <h2>FREELANCING TRAINING</h2>
-</header>
+<header><h2>FREELANCING TRAINING</h2></header>
+<div class="ad"><b>ADVERTISEMENT</b>Advertisement Space</div>
 
 <!-- HOME -->
-<main class="page" id="homePage">
-
-  <div class="folder" onclick="openFolder('Graphic Design')">
-    <span class="folder-icon">📁</span>
-    Graphic Design
-  </div>
-
-  <div class="folder" onclick="openFolder('Digital Marketing')">
-    <span class="folder-icon">📁</span>
-    Digital Marketing
-  </div>
-
-  <div class="folder" onclick="openFolder('Web Design')">
-    <span class="folder-icon">📁</span>
-    Web Design
-  </div>
-
-  <div class="folder" onclick="openFolder('Data Entry')">
-    <span class="folder-icon">📁</span>
-    Data Entry
-  </div>
-
-  <div class="folder" onclick="openFolder('Website Development')">
-    <span class="folder-icon">📁</span>
-    Website Development
-  </div>
-
-  <div class="folder" onclick="openFolder('Mobile Freelancing')">
-    <span class="folder-icon">📁</span>
-    Mobile Freelancing
-  </div>
-
+<main class="page view active" id="home">
+<div class="folder" onclick="openCourse('Graphic Design')"><span>📁</span>Graphic Design</div>
+<div class="folder" onclick="openCourse('Digital Marketing')"><span>📁</span>Digital Marketing</div>
+<div class="folder" onclick="openCourse('Web Design')"><span>📁</span>Web Design</div>
+<div class="folder" onclick="openCourse('Data Entry')"><span>📁</span>Data Entry</div>
+<div class="folder" onclick="openCourse('Website Development')"><span>📁</span>Website Development</div>
+<div class="folder" onclick="openCourse('Mobile Freelancing')"><span>📁</span>Mobile Freelancing</div>
 </main>
 
-<!-- VIDEO PAGE -->
-<main class="page" id="videoPage">
-
-  <button class="back" onclick="goHome()">← Back</button>
-
-  <h2 id="folderTitle">Graphic Design</h2>
-
-  <div class="video-box" id="videoBox">
-    <div class="video-placeholder">
-      LIVE VIDEO
-    </div>
-  </div>
-
-  <div class="actions">
-    <button onclick="likeVideo(this)">👍 Like</button>
-    <button onclick="dislikeVideo(this)">👎 Dislike</button>
-    <button onclick="shareVideo()">↗ Share</button>
-  </div>
-
-  <h3>Members</h3>
-
-  <div id="membersList"></div>
-
+<!-- VIDEO -->
+<main class="page view" id="videoPage">
+<button class="back" onclick="showPage('home')">← Back</button>
+<h2 id="courseTitle"></h2>
+<div class="video" id="videoBox">LIVE VIDEO LINK NOT ADDED</div>
+<div class="actions">
+<button onclick="like(this)">👍 Like</button>
+<button onclick="like(this)">👎 Dislike</button>
+<button onclick="share()">↗ Share</button>
+</div>
+<h3>Members</h3>
+<div id="members"></div>
 </main>
+
+<!-- CHAT -->
+<main class="page view" id="chat">
+<h2 style="color:#40d9ff">Direct Chat</h2>
+<p class="note">Send a text or voice message to the Admin.</p>
+<div class="chatbox" id="messages">
+<div class="msg">Welcome! Send a message to the Admin.<small>System</small></div>
+</div>
+<div class="compose">
+<input id="messageInput" placeholder="Type a message...">
+<button class="primary" onclick="sendMessage()">Send</button>
+<button class="voice" id="voiceButton" onclick="recordVoice()">🎤</button>
+</div>
+<p class="note" id="voiceStatus">Tap the microphone to record a voice message.</p>
+</main>
+
+<!-- PROFILE -->
+<main class="page view" id="profile">
+<h2 style="color:#40d9ff;margin-bottom:15px">MY PROFILE</h2>
+<div class="card profile-top">
+<div class="logo">👤</div>
+<div class="profile-name" id="profileName">Your Name</div>
+</div>
+
+<button class="option" onclick="alert('Course purchase information will be added here.')">
+🛍️ Course Purchase <span class="arrow">›</span>
+</button>
+
+<button class="option" onclick="editProfile()">
+✏️ Edit Profile <span class="arrow">›</span>
+</button>
+
+<button class="option" onclick="toggleSchedule()">
+🕒 Class Time <span class="arrow">›</span>
+</button>
+
+<div class="schedule" id="schedule">
+Class start and end times will be announced by the Admin.
+</div>
+
+<button class="option red" onclick="logout()">
+↪ Log Out <span class="arrow">›</span>
+</button>
+</main>
+
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom">
+<button class="active" id="navHome" onclick="showPage('home')">
+<span class="navicon">⌂</span>Home
+</button>
+<button id="navChat" onclick="showPage('chat')">
+<span class="navicon">☏</span>Chat
+</button>
+<button id="navProfile" onclick="showPage('profile')">
+<span class="navicon">●</span>Profile
+</button>
+</nav>
 
 <script>
-
-// Replace these with real live video embed links.
-const LIVE_VIDEO_URLS = {
-  "Graphic Design": "",
-  "Digital Marketing": "",
-  "Web Design": "",
-  "Data Entry": "",
-  "Website Development": "",
-  "Mobile Freelancing": ""
+// Add video embed links here.
+const VIDEO_URLS = {
+"Graphic Design":"",
+"Digital Marketing":"",
+"Web Design":"",
+"Data Entry":"",
+"Website Development":"",
+"Mobile Freelancing":""
 };
 
-// Demo member information.
-// Real member accounts must come from a secure backend.
-const members = [
-  {id:1,name:"Your Profile",avatar:"👤",isMe:true,mic:false},
-  {id:2,name:"Member 1",avatar:"👤",isMe:false,mic:false},
-  {id:3,name:"Member 2",avatar:"👤",isMe:false,mic:false},
-  {id:4,name:"Member 3",avatar:"👤",isMe:false,mic:false}
+// Demo member list. Real members need a database.
+const membersData = [
+{name:"Your Profile",avatar:"👤",mic:false},
+{name:"Member 1",avatar:"👤",mic:false},
+{name:"Member 2",avatar:"👤",mic:false}
 ];
 
-// Demo only. Admin role must be verified by the server.
+// Demo role. Real Admin access must be verified securely.
 const CURRENT_USER_ROLE = "member";
 
-let currentFolder = "";
+let recorder;
+let audioChunks=[];
 
-function openFolder(name){
-  currentFolder = name;
+function showPage(id){
+document.querySelectorAll(".view").forEach(p=>p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
 
-  document.getElementById("homePage").style.display="none";
-  document.getElementById("videoPage").style.display="block";
-  document.getElementById("folderTitle").textContent=name;
-
-  const url = LIVE_VIDEO_URLS[name];
-  const box = document.getElementById("videoBox");
-
-  if(url){
-    box.innerHTML =
-      '<iframe src="'+url+'" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
-  }else{
-    box.innerHTML =
-      '<div class="video-placeholder">LIVE VIDEO LINK NOT ADDED</div>';
-  }
-
-  showMembers();
+document.querySelectorAll(".bottom button").forEach(b=>b.classList.remove("active"));
+const nav={home:"navHome",chat:"navChat",profile:"navProfile"};
+if(nav[id])document.getElementById(nav[id]).classList.add("active");
+window.scrollTo(0,0);
 }
 
-function goHome(){
-  document.getElementById("videoPage").style.display="none";
-  document.getElementById("homePage").style.display="block";
+function openCourse(name){
+document.getElementById("courseTitle").textContent=name;
+const url=VIDEO_URLS[name];
+const box=document.getElementById("videoBox");
+if(url){
+box.innerHTML='<iframe src="'+url+'" allowfullscreen></iframe>';
+}else{
+box.textContent="LIVE VIDEO LINK NOT ADDED";
+}
+showMembers();
+showPage("videoPage");
 }
 
 function showMembers(){
-  const list=document.getElementById("membersList");
-  list.innerHTML="";
+const list=document.getElementById("members");
+list.innerHTML="";
+membersData.forEach(member=>{
+const row=document.createElement("div");
+row.className="member";
+const avatar=document.createElement("div");
+avatar.className="avatar";
+avatar.textContent=member.avatar;
+const name=document.createElement("div");
+name.className="member-name";
+name.textContent=member.name;
+const mic=document.createElement("span");
+mic.className="mic "+(member.mic?"":"off");
+mic.textContent=member.mic?"🎙":"🔇";
+row.append(avatar,name,mic);
 
-  members.forEach(member=>{
-    const row=document.createElement("div");
-    row.className="member";
-
-    const avatar=document.createElement("div");
-    avatar.className="avatar";
-    avatar.textContent=member.avatar;
-
-    const name=document.createElement("div");
-    name.className="member-name";
-    name.textContent=member.name;
-
-    const mic=document.createElement("span");
-    mic.className="mic"+(member.mic?"":" off");
-    mic.textContent=member.mic?"🎙":"🔇";
-
-    row.append(avatar,name,mic);
-
-    // Only an authenticated admin should receive this control.
-    if(CURRENT_USER_ROLE==="admin"){
-      const control=document.createElement("button");
-      control.className="admin-control";
-      control.textContent=member.mic?"Turn Off":"Turn On";
-
-      control.onclick=()=>{
-        member.mic=!member.mic;
-        showMembers();
-      };
-
-      row.append(control);
-    }
-
-    list.append(row);
-  });
+if(CURRENT_USER_ROLE==="admin"){
+const btn=document.createElement("button");
+btn.className="admin-control";
+btn.textContent=member.mic?"Turn Off":"Turn On";
+btn.onclick=()=>{member.mic=!member.mic;showMembers()};
+row.append(btn);
+}
+list.append(row);
+});
 }
 
-function likeVideo(button){
-  button.classList.toggle("selected");
+function like(button){
+button.classList.toggle("selected");
 }
 
-function dislikeVideo(button){
-  button.classList.toggle("selected");
+function share(){
+if(navigator.share){
+navigator.share({title:"FREELANCING TRAINING",url:location.href});
+}else if(navigator.clipboard){
+navigator.clipboard.writeText(location.href);
+alert("Link copied");
+}
 }
 
-function shareVideo(){
-  if(navigator.share){
-    navigator.share({
-      title:"FREELANCING TRAINING",
-      text:"Watch this learning video",
-      url:location.href
-    });
-  }else{
-    navigator.clipboard.writeText(location.href);
-    alert("Link copied");
-  }
+function sendMessage(){
+const input=document.getElementById("messageInput");
+const value=input.value.trim();
+if(!value)return;
+const msg=document.createElement("div");
+msg.className="msg mine";
+msg.textContent=value;
+const time=document.createElement("small");
+time.textContent="You · "+new Date().toLocaleTimeString();
+msg.append(time);
+document.getElementById("messages").append(msg);
+input.value="";
+document.getElementById("messages").scrollTop=999999;
 }
 
+async function recordVoice(){
+const button=document.getElementById("voiceButton");
+const status=document.getElementById("voiceStatus");
+
+if(recorder && recorder.state==="recording"){
+recorder.stop();
+button.textContent="🎤";
+status.textContent="Processing recording...";
+return;
+}
+
+if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+status.textContent="Voice recording needs a supported browser and HTTPS.";
+return;
+}
+
+try{
+const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+audioChunks=[];
+recorder=new MediaRecorder(stream);
+
+recorder.ondataavailable=e=>{
+if(e.data.size>0)audioChunks.push(e.data);
+};
+
+recorder.onstop=()=>{
+const blob=new Blob(audioChunks,{type:recorder.mimeType||"audio/webm"});
+const url=URL.createObjectURL(blob);
+const msg=document.createElement("div");
+msg.className="msg mine";
+msg.textContent="Voice Message";
+const audio=document.createElement("audio");
+audio.controls=true;
+audio.src=url;
+audio.style.width="100%";
+msg.append(audio);
+document.getElementById("messages").append(msg);
+stream.getTracks().forEach(t=>t.stop());
+status.textContent="Voice message added to this preview.";
+};
+
+recorder.start();
+button.textContent="■";
+status.textContent="Recording... Tap again to stop.";
+}catch(error){
+status.textContent="Microphone permission was not granted.";
+}
+}
+
+function editProfile(){
+const oldName=document.getElementById("profileName").textContent;
+const name=prompt("Enter your name:",oldName);
+if(name && name.trim()){
+document.getElementById("profileName").textContent=name.trim();
+}
+}
+
+function toggleSchedule(){
+document.getElementById("schedule").classList.toggle("show");
+}
+
+function logout(){
+if(confirm("Do you want to log out?")){
+alert("Secure login system needs to be connected for logout.");
+}
+}
 </script>
 </body>
 </html>
