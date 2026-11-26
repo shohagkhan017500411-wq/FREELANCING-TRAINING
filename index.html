@@ -1,123 +1,287 @@
 
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="FREELANCING TRAINING - মোবাইল দিয়ে ফ্রিল্যান্সিং শেখার সহজ প্রশিক্ষণ।">
-  <title>FREELANCING TRAINING</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      background: #071426;
-      color: #fff;
-      line-height: 1.7;
-    }
-    header {
-      padding: 18px 15px;
-      background: #0b203b;
-      text-align: center;
-      border-bottom: 1px solid #16476a;
-    }
-    header h2 { color: #35d5ff; font-size: 23px; }
-    header p { color: #b8d9eb; font-size: 12px; }
-    .hero {
-      text-align: center;
-      padding: 65px 18px;
-      background: linear-gradient(140deg, #09294a, #07516b);
-    }
-    .hero h1 {
-      font-size: 31px;
-      line-height: 1.4;
-      margin-bottom: 15px;
-    }
-    .hero h1 span { color: #39dcff; }
-    .hero p { color: #d5e8f5; margin-bottom: 25px; }
-    .btn {
-      display: inline-block;
-      padding: 12px 25px;
-      border-radius: 8px;
-      background: #20c9ef;
-      color: #061526;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    section { padding: 40px 18px; }
-    .section-title {
-      text-align: center;
-      color: #42d9ff;
-      font-size: 25px;
-      margin-bottom: 22px;
-    }
-    .card {
-      background: #102641;
-      border: 1px solid #1c4968;
-      border-radius: 13px;
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-    .card h3 { color: #40d9ff; margin-bottom: 8px; }
-    .card p { color: #d1dfeb; }
-    .course { border: 1px solid #25c9ee; }
-    .course .price {
-      color: #40e7a1;
-      font-size: 19px;
-      margin: 12px 0;
-    }
-    .steps { counter-reset: step; }
-    .step {
-      padding: 12px;
-      margin: 10px 0;
-      background: #102641;
-      border-radius: 8px;
-    }
-    .step::before {
-      counter-increment: step;
-      content: counter(step) ". ";
-      color: #40d9ff;
-      font-weight: bold;
-    }
-    .notice {
-      background: #172d3d;
-      padding: 15px;
-      border-left: 4px solid #40d9ff;
-      border-radius: 7px;
-      color: #d6e8f4;
-    }
-    footer {
-      text-align: center;
-      padding: 25px 15px;
-      background: #06101f;
-      color: #a9c2d4;
-      font-size: 13px;
-    }
-    @media (min-width: 700px) {
-      .hero h1 { font-size: 43px; }
-      .cards {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="FREELANCING TRAINING - মোবাইল দিয়ে ফ্রিল্যান্সিং শেখার সহজ প্রশিক্ষণ।">
+<title>FREELANCING TRAINING</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #071426;
+  color: white;
+  line-height: 1.7;
+  padding-bottom: 80px;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: #0b203b;
+  border-bottom: 1px solid #16476a;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.brand h2 {
+  color: #35d5ff;
+  font-size: 19px;
+}
+
+.brand p {
+  color: #b8d9eb;
+  font-size: 11px;
+}
+
+.search-toggle {
+  width: 42px;
+  height: 42px;
+  background: #102f4d;
+  color: white;
+  border: 1px solid #287091;
+  border-radius: 10px;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.search-panel {
+  display: none;
+  padding: 12px 16px;
+  background: #0b203b;
+  position: sticky;
+  top: 70px;
+  z-index: 19;
+}
+
+.search-panel.open {
+  display: block;
+}
+
+.search-panel input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #287091;
+  background: #071426;
+  color: white;
+  font-size: 16px;
+}
+
+#search-message {
+  color: #b8d9eb;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 65px 18px;
+  background: linear-gradient(140deg, #09294a, #07516b);
+}
+
+.hero h1 {
+  font-size: 31px;
+  line-height: 1.4;
+  margin-bottom: 15px;
+}
+
+.hero h1 span {
+  color: #39dcff;
+}
+
+.hero p {
+  color: #d5e8f5;
+  margin-bottom: 25px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 25px;
+  border-radius: 8px;
+  background: #20c9ef;
+  color: #061526;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Sections */
+section {
+  padding: 40px 18px;
+}
+
+.section-title {
+  text-align: center;
+  color: #42d9ff;
+  font-size: 25px;
+  margin-bottom: 22px;
+}
+
+.card {
+  background: #102641;
+  border: 1px solid #1c4968;
+  border-radius: 13px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.card h3 {
+  color: #40d9ff;
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: #d1dfeb;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.course {
+  border: 1px solid #25c9ee;
+}
+
+.course .price {
+  color: #40e7a1;
+  font-size: 19px;
+  margin: 12px 0;
+}
+
+.steps {
+  counter-reset: step;
+}
+
+.step {
+  padding: 12px;
+  margin: 10px 0;
+  background: #102641;
+  border-radius: 8px;
+}
+
+.step::before {
+  counter-increment: step;
+  content: counter(step) ". ";
+  color: #40d9ff;
+  font-weight: bold;
+}
+
+.notice {
+  background: #172d3d;
+  padding: 15px;
+  border-left: 4px solid #40d9ff;
+  border-radius: 7px;
+  color: #d6e8f4;
+}
+
+footer {
+  text-align: center;
+  padding: 25px 15px;
+  background: #06101f;
+  color: #a9c2d4;
+  font-size: 13px;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: #0b203b;
+  border-top: 1px solid #287091;
+  padding: 9px 8px calc(9px + env(safe-area-inset-bottom));
+}
+
+.bottom-nav button {
+  background: none;
+  border: none;
+  color: #d1dfeb;
+  font-size: 12px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.bottom-nav button.active {
+  color: #40d9ff;
+  font-weight: bold;
+}
+
+.nav-icon {
+  display: block;
+  font-size: 21px;
+}
+
+.search-highlight {
+  outline: 2px solid #40d9ff;
+  border-radius: 10px;
+}
+
+@media (min-width: 700px) {
+  .hero h1 {
+    font-size: 43px;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+</style>
 </head>
+
 <body>
 
+<!-- Header -->
 <header>
-  <h2>FREELANCING TRAINING</h2>
-  <p>শিখুন দক্ষতা, গড়ুন নিজের ভবিষ্যৎ</p>
+  <div class="brand">
+    <h2>FREELANCING TRAINING</h2>
+    <p>শিখুন দক্ষতা, গড়ুন নিজের ভবিষ্যৎ</p>
+  </div>
+
+  <button class="search-toggle" id="search-toggle" aria-label="Search">
+    🔍
+  </button>
 </header>
 
+<!-- Search -->
+<div class="search-panel" id="search-panel">
+  <input type="search" id="site-search"
+    placeholder="কোর্স বা বিষয় খুঁজুন...">
+  <p id="search-message">যা খুঁজতে চান লিখুন।</p>
+</div>
+
+<!-- Hero -->
 <div class="hero">
-  <h1>মোবাইল দিয়েই শুরু হোক<br><span>ফ্রিল্যান্সিং শেখা</span></h1>
+  <h1>মোবাইল দিয়েই শুরু হোক<br>
+    <span>ফ্রিল্যান্সিং শেখা</span>
+  </h1>
+
   <p>সহজ ভাষায় শিখুন অনলাইন কাজের প্রয়োজনীয় দক্ষতা।</p>
+
   <a class="btn" href="#courses">কোর্স দেখুন</a>
 </div>
 
-<section>
+<!-- About -->
+<section id="about">
   <h2 class="section-title">আমাদের সম্পর্কে</h2>
+
   <div class="card">
     <p>
       FREELANCING TRAINING একটি অনলাইন প্রশিক্ষণ উদ্যোগ।
@@ -127,21 +291,26 @@
   </div>
 </section>
 
+<!-- Benefits -->
 <section>
   <h2 class="section-title">কেন শিখবেন আমাদের কাছে?</h2>
+
   <div class="cards">
     <div class="card">
       <h3>📱 মোবাইল দিয়ে শেখা</h3>
       <p>স্মার্টফোন ব্যবহার করে শেখার উপযোগী পাঠ।</p>
     </div>
+
     <div class="card">
       <h3>📚 সহজ পাঠ</h3>
       <p>নতুনদের জন্য সহজ ভাষায় বিষয়গুলো বোঝানো হবে।</p>
     </div>
+
     <div class="card">
       <h3>🎯 দক্ষতা উন্নয়ন</h3>
       <p>অনলাইন কাজের প্রয়োজনীয় দক্ষতা অনুশীলন।</p>
     </div>
+
     <div class="card">
       <h3>🌐 অনলাইন শিক্ষা</h3>
       <p>নিজের সুবিধামতো সময় শেখার পরিকল্পনা।</p>
@@ -149,11 +318,15 @@
   </div>
 </section>
 
+<!-- Courses -->
 <section id="courses">
   <h2 class="section-title">আমাদের কোর্স</h2>
+
   <div class="card course">
     <h3>মোবাইল দিয়ে ফ্রিল্যান্সিং শেখা</h3>
+
     <p>এই কোর্সে প্রাথমিকভাবে শেখানো হবে:</p>
+
     <ul style="padding-left:22px; margin-top:10px;">
       <li>ফ্রিল্যান্সিং কী এবং কীভাবে কাজ করে</li>
       <li>অনলাইন মার্কেটপ্লেস পরিচিতি</li>
@@ -162,13 +335,17 @@
       <li>ক্লায়েন্টের সঙ্গে যোগাযোগের নিয়ম</li>
       <li>কাজের নমুনা বা পোর্টফোলিও তৈরি</li>
     </ul>
+
     <p class="price">কোর্স ফি: শীঘ্রই ঘোষণা করা হবে</p>
+
     <a class="btn" href="#enroll">আগ্রহ প্রকাশ করুন</a>
   </div>
 </section>
 
+<!-- Learning Process -->
 <section>
   <h2 class="section-title">শেখার প্রক্রিয়া</h2>
+
   <div class="steps">
     <div class="step">কোর্স সম্পর্কে বিস্তারিত জানুন।</div>
     <div class="step">ভর্তি সংক্রান্ত তথ্য সংগ্রহ করুন।</div>
@@ -176,28 +353,128 @@
   </div>
 </section>
 
+<!-- Enrollment -->
 <section id="enroll">
   <h2 class="section-title">কোর্সে আগ্রহী?</h2>
+
   <div class="card">
     <p>ভর্তি ও কোর্সের বিস্তারিত জানতে আমাদের সঙ্গে যোগাযোগ করুন।</p>
-    <p style="margin:12px 0;">যোগাযোগের তথ্য শীঘ্রই যুক্ত করা হবে।</p>
-    <p>বর্তমানে এই ওয়েবসাইটে কোনো অনলাইন পেমেন্ট বা ভর্তি ফরম চালু নেই।</p>
+
+    <p style="margin:12px 0;">
+      যোগাযোগের তথ্য শীঘ্রই যুক্ত করা হবে।
+    </p>
+
+    <p>
+      বর্তমানে এই ওয়েবসাইটে কোনো অনলাইন পেমেন্ট বা ভর্তি ফরম চালু নেই।
+    </p>
   </div>
 </section>
 
+<!-- Notice -->
 <section>
   <h2 class="section-title">গুরুত্বপূর্ণ তথ্য</h2>
+
   <div class="notice">
     ফ্রিল্যান্সিংয়ে আয় নিশ্চিত নয়। সফল হতে প্রয়োজন দক্ষতা,
     নিয়মিত অনুশীলন, ধৈর্য এবং বাস্তব অভিজ্ঞতা।
   </div>
 </section>
 
+<!-- Footer -->
 <footer>
   <h3>FREELANCING TRAINING</h3>
   <p>শিখুন আজ, এগিয়ে যান আগামীকাল।</p>
   <p>© 2026 FREELANCING TRAINING. All rights reserved.</p>
 </footer>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <button class="active" id="nav-home">
+    <span class="nav-icon">🏠</span>
+    Home
+  </button>
+
+  <button id="nav-chat">
+    <span class="nav-icon">💬</span>
+    Chat
+  </button>
+
+  <button id="nav-profile">
+    <span class="nav-icon">👤</span>
+    Profile
+  </button>
+</nav>
+
+<script>
+// Search
+const searchToggle = document.getElementById("search-toggle");
+const searchPanel = document.getElementById("search-panel");
+const searchInput = document.getElementById("site-search");
+const searchMessage = document.getElementById("search-message");
+
+searchToggle.addEventListener("click", () => {
+  searchPanel.classList.toggle("open");
+
+  if (searchPanel.classList.contains("open")) {
+    searchInput.focus();
+  } else {
+    searchInput.value = "";
+    searchMessage.textContent = "যা খুঁজতে চান লিখুন।";
+    document.querySelectorAll(".search-highlight")
+      .forEach(el => el.classList.remove("search-highlight"));
+  }
+});
+
+searchInput.addEventListener("input", () => {
+  const term = searchInput.value.trim().toLowerCase();
+
+  document.querySelectorAll(".search-highlight")
+    .forEach(el => el.classList.remove("search-highlight"));
+
+  if (!term) {
+    searchMessage.textContent = "যা খুঁজতে চান লিখুন।";
+    return;
+  }
+
+  const matches = [...document.querySelectorAll("section, .hero, footer")]
+    .filter(el => el.innerText.toLowerCase().includes(term));
+
+  searchMessage.textContent = matches.length
+    ? matches.length + "টি মিল পাওয়া গেছে।"
+    : "কোনো ফলাফল পাওয়া যায়নি।";
+
+  if (matches.length) {
+    matches[0].classList.add("search-highlight");
+    matches[0].scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }
+});
+
+// Bottom Navigation
+const navButtons = document.querySelectorAll(".bottom-nav button");
+
+function setActive(button) {
+  navButtons.forEach(item => item.classList.remove("active"));
+  button.classList.add("active");
+}
+
+document.getElementById("nav-home").addEventListener("click", function() {
+  setActive(this);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+document.getElementById("nav-chat").addEventListener("click", function() {
+  setActive(this);
+  alert("Chat সুবিধা শীঘ্রই চালু করা হবে।");
+});
+
+document.getElementById("nav-profile").addEventListener("click", function() {
+  setActive(this);
+  alert("Profile সুবিধা শীঘ্রই চালু করা হবে।");
+});
+</script>
 
 </body>
 </html>
