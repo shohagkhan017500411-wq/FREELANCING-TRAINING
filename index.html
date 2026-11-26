@@ -1,480 +1,266 @@
 
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="FREELANCING TRAINING - মোবাইল দিয়ে ফ্রিল্যান্সিং শেখার সহজ প্রশিক্ষণ।">
 <title>FREELANCING TRAINING</title>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#071426;color:white;
+  font-family:Arial,sans-serif;
+  min-height:100vh;padding-bottom:25px
 }
-
-body {
-  font-family: Arial, sans-serif;
-  background: #071426;
-  color: white;
-  line-height: 1.7;
-  padding-bottom: 80px;
+header{
+  background:#0b203b;padding:18px;
+  text-align:center;border-bottom:1px solid #236080
 }
-
-/* Header */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 16px;
-  background: #0b203b;
-  border-bottom: 1px solid #16476a;
-  position: sticky;
-  top: 0;
-  z-index: 20;
+header h2{color:#40d9ff;font-size:20px}
+.page{padding:16px;max-width:650px;margin:auto}
+.folder{
+  background:#102641;border:1px solid #24516e;
+  padding:18px;margin-bottom:12px;
+  border-radius:12px;display:flex;
+  align-items:center;gap:14px;
+  cursor:pointer;font-size:16px;font-weight:bold
 }
-
-.brand h2 {
-  color: #35d5ff;
-  font-size: 19px;
+.folder-icon{font-size:27px}
+.folder:active{background:#17466b}
+#videoPage{display:none}
+.back{
+  background:#173b59;color:white;border:0;
+  padding:11px 17px;border-radius:8px;
+  margin-bottom:18px;cursor:pointer
 }
-
-.brand p {
-  color: #b8d9eb;
-  font-size: 11px;
+.video-box{
+  background:#000;border-radius:12px;
+  overflow:hidden;width:100%;
+  aspect-ratio:16/9;margin:14px 0
 }
-
-.search-toggle {
-  width: 42px;
-  height: 42px;
-  background: #102f4d;
-  color: white;
-  border: 1px solid #287091;
-  border-radius: 10px;
-  font-size: 23px;
-  cursor: pointer;
+.video-box iframe{
+  width:100%;height:100%;border:0
 }
-
-.search-panel {
-  display: none;
-  padding: 12px 16px;
-  background: #0b203b;
-  position: sticky;
-  top: 70px;
-  z-index: 19;
+.video-placeholder{
+  height:100%;display:flex;
+  align-items:center;justify-content:center;
+  color:#aaa
 }
-
-.search-panel.open {
-  display: block;
+.actions{
+  display:flex;justify-content:space-around;
+  padding:15px 0;margin-bottom:15px;
+  background:#102641;border-radius:12px
 }
-
-.search-panel input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #287091;
-  background: #071426;
-  color: white;
-  font-size: 16px;
+.actions button{
+  border:0;background:none;color:white;
+  font-size:15px;cursor:pointer;padding:8px
 }
-
-#search-message {
-  color: #b8d9eb;
-  font-size: 13px;
-  margin-top: 6px;
+.actions button.selected{color:#40d9ff}
+h3{margin:18px 0 12px;color:#40d9ff}
+.member{
+  background:#102641;border:1px solid #244966;
+  border-radius:11px;padding:12px;
+  display:flex;align-items:center;
+  gap:12px;margin-bottom:10px
 }
-
-/* Hero */
-.hero {
-  text-align: center;
-  padding: 65px 18px;
-  background: linear-gradient(140deg, #09294a, #07516b);
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:#1769aa;display:flex;
+  justify-content:center;align-items:center;
+  font-size:20px
 }
-
-.hero h1 {
-  font-size: 31px;
-  line-height: 1.4;
-  margin-bottom: 15px;
+.member-name{flex:1;font-weight:bold}
+.mic{font-size:21px;color:#40d9ff}
+.mic.off{color:#ff5555}
+.admin-control{
+  border:0;border-radius:7px;
+  padding:8px 10px;background:#1769aa;
+  color:white;cursor:pointer
 }
-
-.hero h1 span {
-  color: #39dcff;
-}
-
-.hero p {
-  color: #d5e8f5;
-  margin-bottom: 25px;
-}
-
-.btn {
-  display: inline-block;
-  padding: 12px 25px;
-  border-radius: 8px;
-  background: #20c9ef;
-  color: #061526;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-/* Sections */
-section {
-  padding: 40px 18px;
-}
-
-.section-title {
-  text-align: center;
-  color: #42d9ff;
-  font-size: 25px;
-  margin-bottom: 22px;
-}
-
-.card {
-  background: #102641;
-  border: 1px solid #1c4968;
-  border-radius: 13px;
-  padding: 20px;
-  margin-bottom: 16px;
-}
-
-.card h3 {
-  color: #40d9ff;
-  margin-bottom: 8px;
-}
-
-.card p {
-  color: #d1dfeb;
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-
-.course {
-  border: 1px solid #25c9ee;
-}
-
-.course .price {
-  color: #40e7a1;
-  font-size: 19px;
-  margin: 12px 0;
-}
-
-.steps {
-  counter-reset: step;
-}
-
-.step {
-  padding: 12px;
-  margin: 10px 0;
-  background: #102641;
-  border-radius: 8px;
-}
-
-.step::before {
-  counter-increment: step;
-  content: counter(step) ". ";
-  color: #40d9ff;
-  font-weight: bold;
-}
-
-.notice {
-  background: #172d3d;
-  padding: 15px;
-  border-left: 4px solid #40d9ff;
-  border-radius: 7px;
-  color: #d6e8f4;
-}
-
-footer {
-  text-align: center;
-  padding: 25px 15px;
-  background: #06101f;
-  color: #a9c2d4;
-  font-size: 13px;
-}
-
-/* Bottom Navigation */
-.bottom-nav {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 100;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  background: #0b203b;
-  border-top: 1px solid #287091;
-  padding: 9px 8px calc(9px + env(safe-area-inset-bottom));
-}
-
-.bottom-nav button {
-  background: none;
-  border: none;
-  color: #d1dfeb;
-  font-size: 12px;
-  padding: 5px;
-  cursor: pointer;
-}
-
-.bottom-nav button.active {
-  color: #40d9ff;
-  font-weight: bold;
-}
-
-.nav-icon {
-  display: block;
-  font-size: 21px;
-}
-
-.search-highlight {
-  outline: 2px solid #40d9ff;
-  border-radius: 10px;
-}
-
-@media (min-width: 700px) {
-  .hero h1 {
-    font-size: 43px;
-  }
-
-  .cards {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+.hidden{display:none!important}
 </style>
 </head>
 
 <body>
 
-<!-- Header -->
 <header>
-  <div class="brand">
-    <h2>FREELANCING TRAINING</h2>
-    <p>শিখুন দক্ষতা, গড়ুন নিজের ভবিষ্যৎ</p>
-  </div>
-
-  <button class="search-toggle" id="search-toggle" aria-label="Search">
-    🔍
-  </button>
+  <h2>FREELANCING TRAINING</h2>
 </header>
 
-<!-- Search -->
-<div class="search-panel" id="search-panel">
-  <input type="search" id="site-search"
-    placeholder="কোর্স বা বিষয় খুঁজুন...">
-  <p id="search-message">যা খুঁজতে চান লিখুন।</p>
-</div>
+<!-- HOME -->
+<main class="page" id="homePage">
 
-<!-- Hero -->
-<div class="hero">
-  <h1>মোবাইল দিয়েই শুরু হোক<br>
-    <span>ফ্রিল্যান্সিং শেখা</span>
-  </h1>
-
-  <p>সহজ ভাষায় শিখুন অনলাইন কাজের প্রয়োজনীয় দক্ষতা।</p>
-
-  <a class="btn" href="#courses">কোর্স দেখুন</a>
-</div>
-
-<!-- About -->
-<section id="about">
-  <h2 class="section-title">আমাদের সম্পর্কে</h2>
-
-  <div class="card">
-    <p>
-      FREELANCING TRAINING একটি অনলাইন প্রশিক্ষণ উদ্যোগ।
-      আমাদের লক্ষ্য হলো নতুনদের মোবাইল ব্যবহার করে
-      ফ্রিল্যান্সিংয়ের প্রাথমিক বিষয়গুলো শেখার সুযোগ দেওয়া।
-    </p>
+  <div class="folder" onclick="openFolder('Graphic Design')">
+    <span class="folder-icon">📁</span>
+    Graphic Design
   </div>
-</section>
 
-<!-- Benefits -->
-<section>
-  <h2 class="section-title">কেন শিখবেন আমাদের কাছে?</h2>
+  <div class="folder" onclick="openFolder('Digital Marketing')">
+    <span class="folder-icon">📁</span>
+    Digital Marketing
+  </div>
 
-  <div class="cards">
-    <div class="card">
-      <h3>📱 মোবাইল দিয়ে শেখা</h3>
-      <p>স্মার্টফোন ব্যবহার করে শেখার উপযোগী পাঠ।</p>
-    </div>
+  <div class="folder" onclick="openFolder('Web Design')">
+    <span class="folder-icon">📁</span>
+    Web Design
+  </div>
 
-    <div class="card">
-      <h3>📚 সহজ পাঠ</h3>
-      <p>নতুনদের জন্য সহজ ভাষায় বিষয়গুলো বোঝানো হবে।</p>
-    </div>
+  <div class="folder" onclick="openFolder('Data Entry')">
+    <span class="folder-icon">📁</span>
+    Data Entry
+  </div>
 
-    <div class="card">
-      <h3>🎯 দক্ষতা উন্নয়ন</h3>
-      <p>অনলাইন কাজের প্রয়োজনীয় দক্ষতা অনুশীলন।</p>
-    </div>
+  <div class="folder" onclick="openFolder('Website Development')">
+    <span class="folder-icon">📁</span>
+    Website Development
+  </div>
 
-    <div class="card">
-      <h3>🌐 অনলাইন শিক্ষা</h3>
-      <p>নিজের সুবিধামতো সময় শেখার পরিকল্পনা।</p>
+  <div class="folder" onclick="openFolder('Mobile Freelancing')">
+    <span class="folder-icon">📁</span>
+    Mobile Freelancing
+  </div>
+
+</main>
+
+<!-- VIDEO PAGE -->
+<main class="page" id="videoPage">
+
+  <button class="back" onclick="goHome()">← Back</button>
+
+  <h2 id="folderTitle">Graphic Design</h2>
+
+  <div class="video-box" id="videoBox">
+    <div class="video-placeholder">
+      LIVE VIDEO
     </div>
   </div>
-</section>
 
-<!-- Courses -->
-<section id="courses">
-  <h2 class="section-title">আমাদের কোর্স</h2>
-
-  <div class="card course">
-    <h3>মোবাইল দিয়ে ফ্রিল্যান্সিং শেখা</h3>
-
-    <p>এই কোর্সে প্রাথমিকভাবে শেখানো হবে:</p>
-
-    <ul style="padding-left:22px; margin-top:10px;">
-      <li>ফ্রিল্যান্সিং কী এবং কীভাবে কাজ করে</li>
-      <li>অনলাইন মার্কেটপ্লেস পরিচিতি</li>
-      <li>মোবাইল দিয়ে কাজের প্রস্তুতি</li>
-      <li>বেসিক গ্রাফিক ডিজাইন পরিচিতি</li>
-      <li>ক্লায়েন্টের সঙ্গে যোগাযোগের নিয়ম</li>
-      <li>কাজের নমুনা বা পোর্টফোলিও তৈরি</li>
-    </ul>
-
-    <p class="price">কোর্স ফি: শীঘ্রই ঘোষণা করা হবে</p>
-
-    <a class="btn" href="#enroll">আগ্রহ প্রকাশ করুন</a>
+  <div class="actions">
+    <button onclick="likeVideo(this)">👍 Like</button>
+    <button onclick="dislikeVideo(this)">👎 Dislike</button>
+    <button onclick="shareVideo()">↗ Share</button>
   </div>
-</section>
 
-<!-- Learning Process -->
-<section>
-  <h2 class="section-title">শেখার প্রক্রিয়া</h2>
+  <h3>Members</h3>
 
-  <div class="steps">
-    <div class="step">কোর্স সম্পর্কে বিস্তারিত জানুন।</div>
-    <div class="step">ভর্তি সংক্রান্ত তথ্য সংগ্রহ করুন।</div>
-    <div class="step">প্রশিক্ষণ শুরু করুন এবং নিয়মিত অনুশীলন করুন।</div>
-  </div>
-</section>
+  <div id="membersList"></div>
 
-<!-- Enrollment -->
-<section id="enroll">
-  <h2 class="section-title">কোর্সে আগ্রহী?</h2>
-
-  <div class="card">
-    <p>ভর্তি ও কোর্সের বিস্তারিত জানতে আমাদের সঙ্গে যোগাযোগ করুন।</p>
-
-    <p style="margin:12px 0;">
-      যোগাযোগের তথ্য শীঘ্রই যুক্ত করা হবে।
-    </p>
-
-    <p>
-      বর্তমানে এই ওয়েবসাইটে কোনো অনলাইন পেমেন্ট বা ভর্তি ফরম চালু নেই।
-    </p>
-  </div>
-</section>
-
-<!-- Notice -->
-<section>
-  <h2 class="section-title">গুরুত্বপূর্ণ তথ্য</h2>
-
-  <div class="notice">
-    ফ্রিল্যান্সিংয়ে আয় নিশ্চিত নয়। সফল হতে প্রয়োজন দক্ষতা,
-    নিয়মিত অনুশীলন, ধৈর্য এবং বাস্তব অভিজ্ঞতা।
-  </div>
-</section>
-
-<!-- Footer -->
-<footer>
-  <h3>FREELANCING TRAINING</h3>
-  <p>শিখুন আজ, এগিয়ে যান আগামীকাল।</p>
-  <p>© 2026 FREELANCING TRAINING. All rights reserved.</p>
-</footer>
-
-<!-- Bottom Navigation -->
-<nav class="bottom-nav">
-  <button class="active" id="nav-home">
-    <span class="nav-icon">🏠</span>
-    Home
-  </button>
-
-  <button id="nav-chat">
-    <span class="nav-icon">💬</span>
-    Chat
-  </button>
-
-  <button id="nav-profile">
-    <span class="nav-icon">👤</span>
-    Profile
-  </button>
-</nav>
+</main>
 
 <script>
-// Search
-const searchToggle = document.getElementById("search-toggle");
-const searchPanel = document.getElementById("search-panel");
-const searchInput = document.getElementById("site-search");
-const searchMessage = document.getElementById("search-message");
 
-searchToggle.addEventListener("click", () => {
-  searchPanel.classList.toggle("open");
+// Replace these with real live video embed links.
+const LIVE_VIDEO_URLS = {
+  "Graphic Design": "",
+  "Digital Marketing": "",
+  "Web Design": "",
+  "Data Entry": "",
+  "Website Development": "",
+  "Mobile Freelancing": ""
+};
 
-  if (searchPanel.classList.contains("open")) {
-    searchInput.focus();
-  } else {
-    searchInput.value = "";
-    searchMessage.textContent = "যা খুঁজতে চান লিখুন।";
-    document.querySelectorAll(".search-highlight")
-      .forEach(el => el.classList.remove("search-highlight"));
+// Demo member information.
+// Real member accounts must come from a secure backend.
+const members = [
+  {id:1,name:"Your Profile",avatar:"👤",isMe:true,mic:false},
+  {id:2,name:"Member 1",avatar:"👤",isMe:false,mic:false},
+  {id:3,name:"Member 2",avatar:"👤",isMe:false,mic:false},
+  {id:4,name:"Member 3",avatar:"👤",isMe:false,mic:false}
+];
+
+// Demo only. Admin role must be verified by the server.
+const CURRENT_USER_ROLE = "member";
+
+let currentFolder = "";
+
+function openFolder(name){
+  currentFolder = name;
+
+  document.getElementById("homePage").style.display="none";
+  document.getElementById("videoPage").style.display="block";
+  document.getElementById("folderTitle").textContent=name;
+
+  const url = LIVE_VIDEO_URLS[name];
+  const box = document.getElementById("videoBox");
+
+  if(url){
+    box.innerHTML =
+      '<iframe src="'+url+'" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+  }else{
+    box.innerHTML =
+      '<div class="video-placeholder">LIVE VIDEO LINK NOT ADDED</div>';
   }
-});
 
-searchInput.addEventListener("input", () => {
-  const term = searchInput.value.trim().toLowerCase();
-
-  document.querySelectorAll(".search-highlight")
-    .forEach(el => el.classList.remove("search-highlight"));
-
-  if (!term) {
-    searchMessage.textContent = "যা খুঁজতে চান লিখুন।";
-    return;
-  }
-
-  const matches = [...document.querySelectorAll("section, .hero, footer")]
-    .filter(el => el.innerText.toLowerCase().includes(term));
-
-  searchMessage.textContent = matches.length
-    ? matches.length + "টি মিল পাওয়া গেছে।"
-    : "কোনো ফলাফল পাওয়া যায়নি।";
-
-  if (matches.length) {
-    matches[0].classList.add("search-highlight");
-    matches[0].scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
-  }
-});
-
-// Bottom Navigation
-const navButtons = document.querySelectorAll(".bottom-nav button");
-
-function setActive(button) {
-  navButtons.forEach(item => item.classList.remove("active"));
-  button.classList.add("active");
+  showMembers();
 }
 
-document.getElementById("nav-home").addEventListener("click", function() {
-  setActive(this);
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
+function goHome(){
+  document.getElementById("videoPage").style.display="none";
+  document.getElementById("homePage").style.display="block";
+}
 
-document.getElementById("nav-chat").addEventListener("click", function() {
-  setActive(this);
-  alert("Chat সুবিধা শীঘ্রই চালু করা হবে।");
-});
+function showMembers(){
+  const list=document.getElementById("membersList");
+  list.innerHTML="";
 
-document.getElementById("nav-profile").addEventListener("click", function() {
-  setActive(this);
-  alert("Profile সুবিধা শীঘ্রই চালু করা হবে।");
-});
+  members.forEach(member=>{
+    const row=document.createElement("div");
+    row.className="member";
+
+    const avatar=document.createElement("div");
+    avatar.className="avatar";
+    avatar.textContent=member.avatar;
+
+    const name=document.createElement("div");
+    name.className="member-name";
+    name.textContent=member.name;
+
+    const mic=document.createElement("span");
+    mic.className="mic"+(member.mic?"":" off");
+    mic.textContent=member.mic?"🎙":"🔇";
+
+    row.append(avatar,name,mic);
+
+    // Only an authenticated admin should receive this control.
+    if(CURRENT_USER_ROLE==="admin"){
+      const control=document.createElement("button");
+      control.className="admin-control";
+      control.textContent=member.mic?"Turn Off":"Turn On";
+
+      control.onclick=()=>{
+        member.mic=!member.mic;
+        showMembers();
+      };
+
+      row.append(control);
+    }
+
+    list.append(row);
+  });
+}
+
+function likeVideo(button){
+  button.classList.toggle("selected");
+}
+
+function dislikeVideo(button){
+  button.classList.toggle("selected");
+}
+
+function shareVideo(){
+  if(navigator.share){
+    navigator.share({
+      title:"FREELANCING TRAINING",
+      text:"Watch this learning video",
+      url:location.href
+    });
+  }else{
+    navigator.clipboard.writeText(location.href);
+    alert("Link copied");
+  }
+}
+
 </script>
-
 </body>
 </html>
