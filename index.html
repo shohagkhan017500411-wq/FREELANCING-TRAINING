@@ -217,7 +217,7 @@ label{display:block;margin-top:10px;color:#b9cde3}
 
 <script>
 // ======================================
-// SUPABASE CONFIGURATION - NEW
+// SUPABASE CONFIGURATION
 // ======================================
 
 const SUPABASE_URL = "https://mdkdgoytlfqumjfnqrgb.supabase.co";
@@ -261,15 +261,6 @@ const VIDEO_URLS = {
 "Mobile Freelancing":""
 };
 
-const DEFAULT_SCHEDULES = {
-"Graphic Design":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"},
-"Digital Marketing":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"},
-"Web Design":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"},
-"Data Entry":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"},
-"Website Development":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"},
-"Mobile Freelancing":{date:"Admin সেট করবেন",start:"Admin সেট করবেন",end:"Admin সেট করবেন"}
-};
-
 let recorder = null;
 let audioChunks = [];
 let currentUser = null;
@@ -283,6 +274,9 @@ function showPage(id){
   if(!currentUser && !["login","signup"].includes(id)) id = "login";
   document.querySelectorAll(".view").forEach(p=>p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
+
+  // নতুন সংযোগ: Class Time খুললেই Admin-এর Schedule লোড হবে
+  if(id === "classTime") renderSchedules();
 
   const navMap = {home:"navHome",chat:"navChat",profile:"navProfile"};
   document.querySelectorAll(".bottom button").forEach(b=>b.classList.remove("active"));
@@ -792,34 +786,148 @@ function saveProfile(){
 }
 
 // ======================================
-// CLASS TIME AND LIVE CLOCK
+// NEW: ADMIN CLASS SCHEDULE INTEGRATION
 // ======================================
 
-function renderSchedules(){
+async function renderSchedules(){
   const area = document.getElementById("classSchedules");
+  if(!area) return;
+
   area.innerHTML = "";
+  const loading = document.createElement("p");
+  loading.textContent = "ক্লাসের সময়সূচি লোড হচ্ছে...";
+  area.append(loading);
 
-  COURSES.forEach(name=>{
-    const schedule = DEFAULT_SCHEDULES[name];
-    const card = document.createElement("div");
-    card.className = "schedule-row";
+  const courseOrder = [
+    "Graphic Design",
+    "Digital Marketing",
+    "Web Design",
+    "Data Entry",
+    "Website Development",
+    "Mobile Freelancing"
+  ];
 
-    const title = document.createElement("h3");
-    title.textContent = "📁 " + name;
+  try{
+    if(!supabaseClient){
+      throw new Error("Supabase connection unavailable");
+    }
 
-    const date = document.createElement("p");
-    date.textContent = "📅 Class Date: " + schedule.date;
+    const [courseResult, scheduleResult] = await Promise.all([
+      supabaseClient.from("courses").select("id,title"),
+      supabaseClient.from("class_schedules")
+        .select("id,course_id,title,details,schedule_at,meeting_link,created_at,class_date,start_time,end_time")
+        .order("id", {ascending:false})
+    ]);
 
-    const start = document.createElement("p");
-    start.textContent = "🟢 Start Time: " + schedule.start;
+    if(courseResult.error) throw courseResult.error;
+    if(scheduleResult.error) throw scheduleResult.error;
 
-    const end = document.createElement("p");
-    end.textContent = "🔴 End Time: " + schedule.end;
+    const courses = courseResult.data || [];
+    const schedules = scheduleResult.data || [];
+    const latestByCourse = new Map();
 
-    card.append(title,date,start,end);
-    area.append(card);
-  });
+    schedules.forEach(item=>{
+      if(item.course_id && !latestByCourse.has(String(item.course_id))){
+        latestByCourse.set(String(item.course_id),item);
+      }
+    });
+
+    courses.sort((a,b)=>{
+      const ai=courseOrder.indexOf(a.title);
+      const bi=courseOrder.indexOf(b.title);
+      return (ai<0?999:ai)-(bi<0?999:bi);
+    });
+
+    area.innerHTML="";
+
+    if(!courses.length){
+      const empty=document.createElement("p");
+      empty.textContent="এখনো কোনো কোর্স পাওয়া যায়নি।";
+      area.append(empty);
+      return;
+    }
+
+    courses.forEach(course=>{
+      const card=document.createElement("div");
+      card.className="schedule-row";
+
+      const heading=document.createElement("h3");
+      heading.textContent="📁 "+course.title;
+      card.append(heading);
+
+      const item=latestByCourse.get(String(course.id));
+
+      if(!item){
+        const p=document.createElement("p");
+        p.textContent="এখনো ক্লাসের সময়সূচি দেওয়া হয়নি।";
+        card.append(p);
+      }else{
+        const dateValue=item.class_date || item.schedule_at;
+
+        const dateText=dateValue
+          ? new Date(dateValue).toLocaleDateString("bn-BD",{
+              year:"numeric",
+              month:"long",
+              day:"numeric",
+              timeZone:"Asia/Dhaka"
+            })
+          : "তারিখ জানানো হয়নি";
+
+        const timeText=item.start_time
+          ? item.start_time.slice(0,5)+(item.end_time?" – "+item.end_time.slice(0,5):"")
+          : item.schedule_at
+            ? new Date(item.schedule_at).toLocaleTimeString("bn-BD",{
+                hour:"numeric",
+                minute:"2-digit",
+                timeZone:"Asia/Dhaka"
+              })
+            : "সময় জানানো হয়নি";
+
+        const details=[
+          ["ক্লাস",item.title || "লাইভ ক্লাস"],
+          ["তারিখ",dateText],
+          ["সময়",timeText]
+        ];
+
+        details.forEach(([label,value])=>{
+          const p=document.createElement("p");
+          const strong=document.createElement("strong");
+          strong.textContent=label+": ";
+          p.append(strong,document.createTextNode(value));
+          card.append(p);
+        });
+
+        if(item.details){
+          const p=document.createElement("p");
+          p.textContent=item.details;
+          card.append(p);
+        }
+
+        if(item.meeting_link){
+          const link=document.createElement("a");
+          link.href=item.meeting_link;
+          link.target="_blank";
+          link.rel="noopener noreferrer";
+          link.textContent="ক্লাসে যোগ দিন";
+          card.append(link);
+        }
+      }
+
+      area.append(card);
+    });
+
+  }catch(error){
+    console.error("Schedule load error:",error);
+    area.innerHTML="";
+    const p=document.createElement("p");
+    p.textContent="সময়সূচি লোড করা যায়নি। পরে আবার চেষ্টা করুন।";
+    area.append(p);
+  }
 }
+
+// ======================================
+// BANGLADESH LIVE CLOCK
+// ======================================
 
 function updateClock(){
   const now = new Date();
